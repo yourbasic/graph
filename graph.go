@@ -89,7 +89,7 @@ func String(g Iterator) string {
 		})
 	}
 	edges := make([]edge, 0, len(count))
-	for e, _ := range count {
+	for e := range count {
 		edges = append(edges, e)
 	}
 	// Sort lexicographically on (v, w, c).
