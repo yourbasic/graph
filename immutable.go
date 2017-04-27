@@ -56,9 +56,8 @@ func build(g Iterator, transpose bool) *Immutable {
 		sort.Slice(h.edges[v], func(i, j int) bool {
 			if e := h.edges[v]; e[i].vertex == e[j].vertex {
 				return e[i].cost < e[j].cost
-			} else {
-				return e[i].vertex < e[j].vertex
 			}
+			return e[i].vertex < e[j].vertex
 		})
 	}
 	for v, neighbors := range h.edges {
