@@ -40,8 +40,3 @@ functions that describe the edges of a graph.
 ### Author
 
 Stefan Nilsson – [korthaj](https://github.com/korthaj)
-
-### License
-
-This project is licensed under the 2-Clause BSD License –
-see the [LICENSE](LICENSE) file for details.
