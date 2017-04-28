@@ -42,6 +42,7 @@ functions that describe the edges of a graph.
 * The API of this library is frozen.
 * Bug fixes and performance enhancement can be expected.
 * New functionality might be included.
+* The version numbers adhere to [semantic versioning](http://semver.org/).
 
 The only accepted reason to modify the API of this package is to
 handle bug fixes that can't be resolved in any other reasonable way.
