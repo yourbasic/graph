@@ -37,6 +37,17 @@ they are instead computed as needed. New virtual graphs are constructed
 by composing and filtering a set of standard graphs, or by writing
 functions that describe the edges of a graph.
 
-### Author
+### Roadmap
+
+* The API of this library is frozen.
+* Bug fixes and performance enhancement can be expected.
+* New functionality might be included.
+
+The only accepted reason to change the API of this package is to
+handle bug fixes that can't be resolved in any other reasonable way.
+
+New features and performance enhancements are limited to basic
+algorithms and data structures, akin to the ones that you might find
+in a computer science textbook.
 
 Stefan Nilsson – [korthaj](https://github.com/korthaj)
