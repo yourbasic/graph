@@ -43,7 +43,7 @@ functions that describe the edges of a graph.
 * Bug fixes and performance enhancement can be expected.
 * New functionality might be included.
 
-The only accepted reason to change the API of this package is to
+The only accepted reason to modify the API of this package is to
 handle bug fixes that can't be resolved in any other reasonable way.
 
 New features and performance enhancements are limited to basic
