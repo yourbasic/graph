@@ -30,38 +30,45 @@ func TestSort(t *testing.T) {
 
 	res := g0
 	exp := "0 []"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Sort: %s", mess)
 	}
 	Consistent("Sort g0", t, res)
 
 	res = g1
 	exp = "1 [(0 0)]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Sort: %s", mess)
 	}
 	Consistent("Sort g1", t, res)
 
 	res = g1c
 	exp = "1 [(0 0):1]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Sort: %s", mess)
 	}
 	Consistent("Sort g1c", t, res)
 
 	res = g5
 	exp = "5 [(0 1) (2 3)]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Sort: %s", mess)
 	}
 	Consistent("Sort g5", t, res)
 
 	res = g5c
 	exp = "5 [(0 1) (2 3):1]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Sort: %s", mess)
 	}
 	Consistent("Sort g5c", t, res)
+
+	res = Sort(g5c)
+	exp = "5 [(0 1) (2 3):1]"
+	if mess, diff := diff(res.String(), exp); diff {
+		t.Errorf("Sort: %s", mess)
+	}
+	Consistent("Sort Sort(g5c)", t, res)
 
 	n := 10
 	g := New(n)
@@ -69,6 +76,7 @@ func TestSort(t *testing.T) {
 		g.AddBothCost(rand.Intn(n), rand.Intn(n), rand.Int63())
 	}
 	Consistent("Sort rand", t, Sort(g))
+	Consistent("Sort Sort(rand)", t, Sort(Sort(g)))
 }
 
 func TestTranspose(t *testing.T) {
@@ -76,35 +84,35 @@ func TestTranspose(t *testing.T) {
 
 	res := Transpose(g0)
 	exp := "0 []"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Transpose: %s", mess)
 	}
 	Consistent("Transpose g0", t, res)
 
 	res = Transpose(g1)
 	exp = "1 [(0 0)]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Transpose g1: %s", mess)
 	}
 	Consistent("Transpose", t, res)
 
 	res = Transpose(g1c)
 	exp = "1 [(0 0):1]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Transpose g1c: %s", mess)
 	}
 	Consistent("Transpose", t, res)
 
 	res = Transpose(g5)
 	exp = "5 [(1 0) (3 2)]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Transpose: %s", mess)
 	}
 	Consistent("Transpose g5", t, res)
 
 	res = Transpose(g5c)
 	exp = "5 [(1 0) (3 2):1]"
-	if mess, diff := diff(String(res), exp); diff {
+	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("Transpose: %s", mess)
 	}
 	Consistent("Transpose g5c", t, res)
@@ -141,6 +149,12 @@ func TestOrderImm(t *testing.T) {
 func TestEdgeImm(t *testing.T) {
 	_, g1, g1c, g5, _ := SetUpImm()
 
+	if mess, diff := diff(g1.Edge(-1, 0), false); diff {
+		t.Errorf("g1.Edge(-1, 0) %s", mess)
+	}
+	if mess, diff := diff(g1.Edge(1, 0), false); diff {
+		t.Errorf("g1.Edge(1, 0) %s", mess)
+	}
 	if mess, diff := diff(g1.Edge(0, 0), true); diff {
 		t.Errorf("g1.Edge(0, 0) %s", mess)
 	}
@@ -164,6 +178,12 @@ func TestEdgeImm(t *testing.T) {
 func TestDegreeImm(t *testing.T) {
 	_, g1, g1c, g5, g5c := SetUpImm()
 
+	if mess, diff := diff(g1.Degree(-1), 0); diff {
+		t.Errorf("g1.Degree(0) %s", mess)
+	}
+	if mess, diff := diff(g1.Degree(1), 0); diff {
+		t.Errorf("g1.Degree(0) %s", mess)
+	}
 	if mess, diff := diff(g1.Degree(0), 1); diff {
 		t.Errorf("g1.Degree(0) %s", mess)
 	}

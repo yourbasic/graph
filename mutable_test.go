@@ -82,23 +82,12 @@ func TestCopy(t *testing.T) {
 	}
 	Consistent("Copy immutable g5", t, res)
 
-	res = Copy(Iterator(g0))
-	if mess, diff := diff(g0, res); diff {
-		t.Errorf("Copy iterator g0 %s", mess)
+	res = Copy(Multi{})
+	exp := "3 [(0 0):5 (0 1):7 (1 0):5]"
+	if mess, diff := diff(res.String(), exp); diff {
+		t.Errorf("Copy iterator Multi %s", mess)
 	}
-	Consistent("Copy iterator g0", t, res)
-
-	res = Copy(Iterator(g1))
-	if mess, diff := diff(g1, res); diff {
-		t.Errorf("Copy iterator g1 %s", mess)
-	}
-	Consistent("Copy iterator g1", t, res)
-
-	res = Copy(Iterator(g5))
-	if mess, diff := diff(g5, res); diff {
-		t.Errorf("Copy iterator g5 %s", mess)
-	}
-	Consistent("Copy iterator g5", t, res)
+	Consistent("Copy iterator Multi", t, res)
 
 	n := 10
 	g := New(n)
@@ -125,10 +114,66 @@ func TestOrder(t *testing.T) {
 	}
 }
 
+func TestEdge(t *testing.T) {
+	_, g1, g5 := setup()
+
+	if mess, diff := diff(g1.Edge(-1, 0), false); diff {
+		t.Errorf("g1.Edge(-1, 0) %s", mess)
+	}
+	if mess, diff := diff(g1.Edge(1, 0), false); diff {
+		t.Errorf("g1.Edge(1, 0) %s", mess)
+	}
+	if mess, diff := diff(g1.Edge(0, 0), true); diff {
+		t.Errorf("g1.Edge(0, 0) %s", mess)
+	}
+	if mess, diff := diff(g5.Edge(0, 1), true); diff {
+		t.Errorf("g5.Edge(0, 1) %s", mess)
+	}
+	if mess, diff := diff(g5.Edge(1, 0), false); diff {
+		t.Errorf("g5.Edge(1, 0) %s", mess)
+	}
+	if mess, diff := diff(g5.Edge(2, 3), true); diff {
+		t.Errorf("g5.Edge(2, 3) %s", mess)
+	}
+	if mess, diff := diff(g5.Edge(3, 2), false); diff {
+		t.Errorf("g5.Edge(3, 2) %s", mess)
+	}
+}
+
+func TestDegree(t *testing.T) {
+	_, g1, g5 := setup()
+
+	if mess, diff := diff(g1.Degree(-1), 0); diff {
+		t.Errorf("g1.Degree(0) %s", mess)
+	}
+	if mess, diff := diff(g1.Degree(1), 0); diff {
+		t.Errorf("g1.Degree(0) %s", mess)
+	}
+	if mess, diff := diff(g1.Degree(0), 1); diff {
+		t.Errorf("g1.Degree(0) %s", mess)
+	}
+	if mess, diff := diff(g5.Degree(0), 1); diff {
+		t.Errorf("g5.Degree(0) %s", mess)
+	}
+	if mess, diff := diff(g5.Degree(1), 0); diff {
+		t.Errorf("g5.Degree(1) %s", mess)
+	}
+}
+
 func TestCost(t *testing.T) {
 	_, g1, g5 := setup()
 
-	cost := g1.Cost(0, 0)
+	cost := g1.Cost(-1, 0)
+	if mess, diff := diff(cost, int64(0)); diff {
+		t.Errorf("g1.Cost(0, 0) %s", mess)
+	}
+
+	cost = g1.Cost(1, 0)
+	if mess, diff := diff(cost, int64(0)); diff {
+		t.Errorf("g1.Cost(0, 0) %s", mess)
+	}
+
+	cost = g1.Cost(0, 0)
 	if mess, diff := diff(cost, int64(0)); diff {
 		t.Errorf("g1.Cost(0, 0) %s", mess)
 	}
