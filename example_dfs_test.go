@@ -14,7 +14,7 @@ const (
 // The package doesn't support vertex labeling. However,
 // since vertices are always numbered 0..n-1, it's easy
 // to add this type of data on the side. This implementation
-// of depth-first search uses seperate slices to keep track of
+// of depth-first search uses separate slices to keep track of
 // vertex colors, predecessors and discovery times.
 type DFSData struct {
 	Time     int
