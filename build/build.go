@@ -249,7 +249,14 @@ func generic0(n int, edge func(v, w int) bool) *Virtual {
 // Generic returns a virtual graph with n vertices; its edge set consists of
 // all edges (v, w), v ≠ w, for which edge(v, w) returns true.
 func Generic(n int, edge FilterFunc) *Virtual {
-	if edge == nil {
+	switch {
+	case n < 0:
+		return nil
+	case n == 0:
+		return null
+	case n == 1:
+		return singleton()
+	case edge == nil:
 		return Kn(n)
 	}
 	return generic0(n, edge)
@@ -277,7 +284,9 @@ func Specific(g graph.Iterator) *Virtual {
 		return res
 	}
 	res.cost = func(v, w int) (cost int64) {
-		// Only called when w is a neighbor of v.
+		if !res.edge(v, w) {
+			return 0
+		}
 		h.VisitFrom(v, w, func(w int, c int64) (skip bool) {
 			cost = c
 			return true

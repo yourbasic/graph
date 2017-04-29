@@ -26,7 +26,7 @@ func TestStrongComponents(t *testing.T) {
 	g.Add(7, 6)
 	g.Add(7, 7)
 	g.Add(8, 8)
-	exp := [][]int{[]int{2, 1, 0}, []int{6, 4}, []int{5, 3}, []int{7}, []int{8}, []int{9}}
+	exp := [][]int{{2, 1, 0}, {6, 4}, {5, 3}, {7}, {8}, {9}}
 	if mess, diff := diff(StrongComponents(g), exp); diff {
 		t.Errorf("StronglyConnected %s", mess)
 	}

@@ -149,6 +149,9 @@ func TestEdge(t *testing.T) {
 }
 
 func TestLine(t *testing.T) {
+	if mess, diff := diff(line(-1), (*Virtual)(nil)); diff {
+		t.Errorf("line %s", mess)
+	}
 	if mess, diff := diff(line(0).String(), "0 []"); diff {
 		t.Errorf("line %s", mess)
 	}
@@ -167,7 +170,73 @@ func TestLine(t *testing.T) {
 }
 
 func TestGeneric(t *testing.T) {
-	g := Generic(0, func(v, w int) bool { return v != 0 })
+	g := generic0(-1, alwaysEdge)
+	if mess, diff := diff(g, (*Virtual)(nil)); diff {
+		t.Errorf("generic0 %s", mess)
+	}
+	Consistent("generic0", t, g)
+
+	g = generic0(0, alwaysEdge)
+	if mess, diff := diff(g.String(), "0 []"); diff {
+		t.Errorf("generic0 %s", mess)
+	}
+	Consistent("generic0", t, g)
+
+	g = generic0(1, alwaysEdge)
+	if mess, diff := diff(g.String(), "1 []"); diff {
+		t.Errorf("generic0 %s", mess)
+	}
+	Consistent("generic0", t, g)
+
+	g = generic(-1, zero, alwaysEdge)
+	if mess, diff := diff(g, (*Virtual)(nil)); diff {
+		t.Errorf("generic %s", mess)
+	}
+	Consistent("generic", t, g)
+
+	g = generic(0, zero, alwaysEdge)
+	if mess, diff := diff(g.String(), "0 []"); diff {
+		t.Errorf("generic %s", mess)
+	}
+	Consistent("generic", t, g)
+
+	g = generic(1, zero, alwaysEdge)
+	if mess, diff := diff(g.String(), "1 []"); diff {
+		t.Errorf("generic %s", mess)
+	}
+	Consistent("generic", t, g)
+
+	g = generic(2, zero, alwaysEdge)
+	if mess, diff := diff(g.String(), "2 [{0 1}]"); diff {
+		t.Errorf("generic %s", mess)
+	}
+	Consistent("generic", t, g)
+
+	g = Generic(-1, nil)
+	if mess, diff := diff(g, (*Virtual)(nil)); diff {
+		t.Errorf("Generic %s", mess)
+	}
+	Consistent("Generic", t, g)
+
+	g = Generic(0, nil)
+	if mess, diff := diff(g.String(), "0 []"); diff {
+		t.Errorf("Generic %s", mess)
+	}
+	Consistent("Generic", t, g)
+
+	g = Generic(1, nil)
+	if mess, diff := diff(g.String(), "1 []"); diff {
+		t.Errorf("Generic %s", mess)
+	}
+	Consistent("Generic", t, g)
+
+	g = Generic(2, nil)
+	if mess, diff := diff(g.String(), "2 [{0 1}]"); diff {
+		t.Errorf("Generic %s", mess)
+	}
+	Consistent("Generic", t, g)
+
+	g = Generic(0, func(v, w int) bool { return v != 0 })
 	if mess, diff := diff(g.String(), "0 []"); diff {
 		t.Errorf("Generic %s", mess)
 	}
@@ -205,9 +274,22 @@ func TestSpecific(t *testing.T) {
 		t.Errorf("Specific %s", mess)
 	}
 	Consistent("Specific", t, Specific(Kn(4)))
+
+	if mess, diff := diff(res.cost(0, 0), int64(0)); diff {
+		t.Errorf("Specific cost %s", mess)
+	}
+	if mess, diff := diff(res.cost(0, 1), int64(1)); diff {
+		t.Errorf("Specific cost %s", mess)
+	}
+	if mess, diff := diff(res.cost(1, 0), int64(10)); diff {
+		t.Errorf("Specific cost %s", mess)
+	}
 }
 
 func TestEmpty(t *testing.T) {
+	if mess, diff := diff(Empty(-1), (*Virtual)(nil)); diff {
+		t.Errorf("Empty %s", mess)
+	}
 	if mess, diff := diff(Empty(0).String(), "0 []"); diff {
 		t.Errorf("Empty %s", mess)
 	}
@@ -223,6 +305,9 @@ func TestEmpty(t *testing.T) {
 }
 
 func TestKn(t *testing.T) {
+	if mess, diff := diff(Kn(-1), (*Virtual)(nil)); diff {
+		t.Errorf("Kn %s", mess)
+	}
 	if mess, diff := diff(Kn(0).String(), "0 []"); diff {
 		t.Errorf("Kn %s", mess)
 	}
@@ -289,6 +374,12 @@ func TestKeep(t *testing.T) {
 		t.Errorf("Keep %s", mess)
 	}
 	Consistent("Keep", t, g)
+
+	g = Cycle(3).AddCost(1).Keep(nil)
+	if mess, diff := diff(g.String(), "3 [{0 1}:1 {0 2}:1 {1 2}:1]"); diff {
+		t.Errorf("Keep %s", mess)
+	}
+	Consistent("Keep", t, g)
 }
 
 func TestAddCost(t *testing.T) {
@@ -315,10 +406,58 @@ func TestAddCostFunc(t *testing.T) {
 	}
 	Consistent("AccCostFunc", t, res)
 
+	if mess, diff := diff(res.Cost(0, 0), int64(0)); diff {
+		t.Errorf("Cost %s", mess)
+	}
+	if mess, diff := diff(res.Cost(0, 1), int64(5)); diff {
+		t.Errorf("Cost %s", mess)
+	}
+	if mess, diff := diff(res.Cost(-1, 0), int64(0)); diff {
+		t.Errorf("Cost %s", mess)
+	}
+
+	res = Grid(1, 2).AddCostFunc(nil)
+	exp = "2 [{0 1}]"
+	if mess, diff := diff(res.String(), exp); diff {
+		t.Errorf("AddCostFunc %s", mess)
+	}
+	Consistent("AccCostFunc", t, res)
+
 	res = Empty(0).AddCostFunc(Cost(5))
 	exp = "0 []"
 	if mess, diff := diff(res.String(), exp); diff {
 		t.Errorf("AddCostFunc %s", mess)
 	}
 	Consistent("AddCostFunc", t, res)
+}
+
+func TestVisit(t *testing.T) {
+	g := Grid(1, 2).AddCost(5)
+	res := g.Visit(0, func(w int, c int64) (skip bool) {
+		return w == 1 && c == 5
+	})
+	if mess, diff := diff(res, true); diff {
+		t.Errorf("Visit %s", mess)
+	}
+
+	res = g.VisitFrom(0, 0, func(w int, c int64) (skip bool) {
+		return w == 1 && c == 5
+	})
+	if mess, diff := diff(res, true); diff {
+		t.Errorf("Visit %s", mess)
+	}
+
+	res = g.VisitFrom(0, -1, func(w int, c int64) (skip bool) {
+		return w == 1 && c == 5
+	})
+	if mess, diff := diff(res, true); diff {
+		t.Errorf("Visit %s", mess)
+	}
+
+	res = g.VisitFrom(0, 2, func(w int, c int64) (skip bool) {
+		return w == 1 && c == 5
+	})
+	if mess, diff := diff(res, false); diff {
+		t.Errorf("Visit %s", mess)
+	}
 }

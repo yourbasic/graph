@@ -14,7 +14,7 @@ func TestComponents(t *testing.T) {
 	}
 
 	g = New(1)
-	if mess, diff := diff(Components(g), [][]int{[]int{0}}); diff {
+	if mess, diff := diff(Components(g), [][]int{{0}}); diff {
 		t.Errorf("Components %s", mess)
 	}
 	if mess, diff := diff(Connected(g), true); diff {
@@ -22,7 +22,7 @@ func TestComponents(t *testing.T) {
 	}
 
 	g.Add(0, 0)
-	if mess, diff := diff(Components(g), [][]int{[]int{0}}); diff {
+	if mess, diff := diff(Components(g), [][]int{{0}}); diff {
 		t.Errorf("Components %s", mess)
 	}
 	if mess, diff := diff(Connected(g), true); diff {
@@ -32,7 +32,7 @@ func TestComponents(t *testing.T) {
 	g = New(4)
 	g.Add(0, 1)
 	g.Add(2, 1)
-	if mess, diff := diff(Components(g), [][]int{[]int{0, 1, 2}, []int{3}}); diff {
+	if mess, diff := diff(Components(g), [][]int{{0, 1, 2}, {3}}); diff {
 		t.Errorf("Components %s", mess)
 	}
 	if mess, diff := diff(Connected(g), false); diff {
@@ -43,7 +43,7 @@ func TestComponents(t *testing.T) {
 	g.AddBoth(1, 2)
 	g.AddBoth(2, 3)
 	g.AddBoth(0, 3)
-	if mess, diff := diff(Components(g), [][]int{[]int{0, 1, 2, 3}}); diff {
+	if mess, diff := diff(Components(g), [][]int{{0, 1, 2, 3}}); diff {
 		t.Errorf("Components %s", mess)
 	}
 	if mess, diff := diff(Connected(g), true); diff {

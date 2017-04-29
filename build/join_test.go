@@ -18,6 +18,13 @@ func TestJoin(t *testing.T) {
 	}
 	Consistent("Join", t, res)
 
+	res = Empty(0).Join(g, b)
+	exp = "4 [{0 1} {0 2} {1 3} {2 3}]"
+	if mess, diff := diff(res.String(), exp); diff {
+		t.Errorf("Join %s", mess)
+	}
+	Consistent("Join", t, res)
+
 	b = EdgeSet{
 		From: Vertex(1),
 		To:   Vertex(3),
