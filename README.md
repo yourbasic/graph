@@ -2,6 +2,10 @@
 
 Golang library of basic graph algorithms
 
+![Topological ordering](top.png)
+
+*Topological ordering, image by [David Eppstein][de], [CC0 1.0][cc010].*
+
 ### Generic graph algorithms
 
 The algorithms can be applied to any graph data structure implementing
@@ -42,7 +46,7 @@ functions that describe the edges of a graph.
 * The API of this library is frozen.
 * Bug fixes and performance enhancement can be expected.
 * New functionality might be included.
-* The version numbers adhere to [semantic versioning](http://semver.org/).
+* The version numbers adhere to [semantic versioning][sv].
 
 The only accepted reason to modify the API of this package is to
 handle bug fixes that can't be resolved in any other reasonable way.
@@ -52,3 +56,8 @@ algorithms and data structures, akin to the ones that you might find
 in a computer science textbook.
 
 Stefan Nilsson – [korthaj](https://github.com/korthaj)
+
+[cc010]: https://creativecommons.org/publicdomain/zero/1.0/deed.en
+[de]: https://commons.wikimedia.org/wiki/User:David_Eppstein
+[sv]: http://semver.org/
+
