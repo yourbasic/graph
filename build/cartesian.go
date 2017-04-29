@@ -13,8 +13,6 @@ import "strconv"
 func (g1 *Virtual) Cartesian(g2 *Virtual) *Virtual {
 	m, n := g1.Order(), g2.Order()
 	switch {
-	case m < 0 || n < 0:
-		return nil
 	case m == 0 || n == 0:
 		return null
 	case m*n/m != n:

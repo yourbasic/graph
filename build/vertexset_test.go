@@ -165,7 +165,7 @@ func TestAndOr(t *testing.T) {
 
 	expInter := VertexSet{set: []interval{{5, 6, 0}, {9, 10, 0}, {12, 13, 0}, {16, 18, 0}}}
 	if !v1.And(v2).equals(expInter) {
-		t.Errorf("Intersect: %v; want %v", v1.And(v2), expInter)
+		t.Errorf("And: %v; want %v", v1.And(v2), expInter)
 	}
 
 	expUnion := VertexSet{set: []interval{{0, 3, 0}, {4, 10, 0}, {11, 14, 0}, {15, 19, 0}}}
@@ -175,89 +175,93 @@ func TestAndOr(t *testing.T) {
 
 	v := Range(1, 3)
 	if mess, diff := diff(VertexSet{}.And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(VertexSet{}.And(v).Contains(-1), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(VertexSet{}.And(v).Contains(1), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Vertex(0).And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Vertex(0).And(v).Contains(1), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 0).And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(1, 1).And(v).Contains(1), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, -1).And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 1).And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 1).And(v).Contains(1), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(2, 4).And(v).Contains(1), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(2, 4).And(v).Contains(2), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(2, 4).And(v).Contains(3), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(2, 4).And(v).Contains(4), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 
 	if mess, diff := diff(Range(0, 4).And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 4).And(v).Contains(1), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 4).And(v).Contains(2), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 4).And(v).Contains(3), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 4)).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 4)).Contains(1), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 4)).Contains(2), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 4)).Contains(3), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 
 	if mess, diff := diff(Range(0, 2).And(v).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 2).And(v).Contains(1), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(Range(0, 2).And(v).Contains(2), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 2)).Contains(0), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 2)).Contains(1), true); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
 	}
 	if mess, diff := diff(v.And(Range(0, 2)).Contains(2), false); diff {
-		t.Errorf("Intersect %s", mess)
+		t.Errorf("And %s", mess)
+	}
+
+	if mess, diff := diff(VertexSet{nil}.Or(VertexSet{nil}), VertexSet{nil}); diff {
+		t.Errorf("Or %s", mess)
 	}
 }

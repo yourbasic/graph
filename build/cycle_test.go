@@ -3,6 +3,10 @@ package build
 import "testing"
 
 func TestCycle(t *testing.T) {
+	if mess, diff := diff(Cycle(-1), (*Virtual)(nil)); diff {
+		t.Errorf("Cycle %s", mess)
+	}
+
 	if mess, diff := diff(Cycle(0).String(), "0 []"); diff {
 		t.Errorf("Cycle %s", mess)
 	}

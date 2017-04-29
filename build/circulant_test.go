@@ -12,6 +12,18 @@ func TestCirculant(t *testing.T) {
 	}
 	Consistent("Circulant", t, res)
 
+	res = Circulant(-1)
+	if mess, diff := diff(res, (*Virtual)(nil)); diff {
+		t.Errorf("Circulant %s", mess)
+	}
+	Consistent("Circulant", t, res)
+
+	res = Circulant(0)
+	if mess, diff := diff(res.String(), "0 []"); diff {
+		t.Errorf("Circulant %s", mess)
+	}
+	Consistent("Circulant", t, res)
+
 	res = Circulant(1)
 	if mess, diff := diff(res.String(), "1 []"); diff {
 		t.Errorf("Circulant %s", mess)
