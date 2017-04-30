@@ -225,11 +225,6 @@ func Equal(g, h Iterator) bool {
 	if g.Order() != h.Order() {
 		return false
 	}
-	type edge struct {
-		v int
-		w int
-		c int64
-	}
 	edges := make(map[edge]int)
 	for v := 0; v < g.Order(); v++ {
 		g.Visit(v, func(w int, c int64) (skip bool) {
