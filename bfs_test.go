@@ -6,7 +6,7 @@ import (
 )
 
 func TestBFS(t *testing.T) {
-	gm := New(10)
+	g := New(10)
 	for _, e := range []struct {
 		v, w int
 	}{
@@ -15,12 +15,11 @@ func TestBFS(t *testing.T) {
 		{2, 3}, {5, 6},
 		{3, 6}, {8, 9}, {4, 4},
 	} {
-		gm.AddBoth(e.v, e.w)
+		g.AddBoth(e.v, e.w)
 	}
-	g := Sort(gm)
 	exp := "0147925836"
 	res := "0"
-	BFS(g, 0, func(v, w int, c int64) {
+	BFS(Sort(g), 0, func(v, w int, c int64) {
 		res += strconv.Itoa(w)
 	})
 	if mess, diff := diff(res, exp); diff {
