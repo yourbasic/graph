@@ -41,6 +41,18 @@ they are instead computed as needed. New virtual graphs are constructed
 by composing and filtering a set of standard graphs, or by writing
 functions that describe the edges of a graph.
 
+### Installation
+
+Once you have [installed Go][golang-install], run this command
+to install the `graph` package:
+
+    go get -u github.com/yourbasic/graph
+    
+### Documentation
+
+There is an online reference for the package at
+[godoc.org/github.com/yourbasic/graph][godoc-graph].
+
 ### Roadmap
 
 * The API of this library is frozen.
@@ -57,6 +69,8 @@ in a computer science textbook.
 
 Stefan Nilsson – [korthaj](https://github.com/korthaj)
 
+[godoc-graph]: https://godoc.org/github.com/yourbasic/graph
+[golang-install]: http://golang.org/doc/install.html
 [cc010]: https://creativecommons.org/publicdomain/zero/1.0/deed.en
 [de]: https://commons.wikimedia.org/wiki/User:David_Eppstein
 [sv]: http://semver.org/
