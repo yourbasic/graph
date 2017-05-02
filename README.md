@@ -46,7 +46,7 @@ functions that describe the edges of a graph.
 Once you have [installed Go][golang-install], run this command
 to install the `graph` package:
 
-    go get -u github.com/yourbasic/graph
+    go get github.com/yourbasic/graph
     
 ### Documentation
 
