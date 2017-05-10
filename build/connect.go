@@ -25,8 +25,9 @@ func (g1 *Virtual) Connect(v1 int, g2 *Virtual) *Virtual {
 			return g2.cost(0, w-t)
 		case w == v1:
 			return g2.cost(v-t, 0)
+		default:
+			return 0
 		}
-		return 0
 	}
 
 	res := generic(n, newCost, func(v, w int) bool {
@@ -39,8 +40,9 @@ func (g1 *Virtual) Connect(v1 int, g2 *Virtual) *Virtual {
 			return g2.edge(0, w-t)
 		case w == v1:
 			return g2.edge(v-t, 0)
+		default:
+			return false
 		}
-		return false
 	})
 
 	res.degree = func(v int) (deg int) {
@@ -55,23 +57,23 @@ func (g1 *Virtual) Connect(v1 int, g2 *Virtual) *Virtual {
 	}
 
 	res.visit = func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
-		if v > t {
+		switch {
+		case v > t:
 			return g2.visit(v-t, max(0, a-t), func(w int, c int64) (skip bool) {
 				if w == 0 {
 					return v1 >= a && do(v1, c)
 				}
 				return do(w+t, c)
 			})
-		}
-		if g1.visit(v, a, do) {
+		case g1.visit(v, a, do):
 			return true
-		}
-		if v == v1 {
+		case v == v1:
 			return g2.visit(0, max(0, a-t), func(w int, c int64) (skip bool) {
 				return do(w+t, c)
 			})
+		default:
+			return
 		}
-		return
 	}
 	return res
 }

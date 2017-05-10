@@ -20,11 +20,13 @@ func (g1 *Virtual) Join(g2 *Virtual, bridge EdgeSet) *Virtual {
 		bridge.Cost = zero
 	}
 	joinCost := func(v, w int) int64 {
-		if v < t && w < t {
+		switch {
+		case v < t && w < t:
 			return g1.cost(v, w)
-		}
-		if v >= t && w >= t {
+		case v >= t && w >= t:
 			return g2.cost(v-t, w-t)
+		default:
+			return bridge.Cost(v, w)
 		}
 		return bridge.Cost(v, w)
 	}
@@ -38,32 +40,35 @@ func (g1 *Virtual) Join(g2 *Virtual, bridge EdgeSet) *Virtual {
 	s2 := bridge.To.And(Range(t, g2.order+t))
 
 	res := generic(n, joinCost, func(v, w int) (edge bool) {
-		if v < t && w < t {
+		switch {
+		case v < t && w < t:
 			return g1.edge(v, w)
-		}
-		if v >= t && w >= t {
+		case v >= t && w >= t:
 			return g2.edge(v-t, w-t)
-		}
-		if !bridge.Keep(v, w) {
+		case !bridge.Keep(v, w):
 			return false
+		default:
+			return s1.Contains(v) && s2.Contains(w) ||
+				s1.Contains(w) && s2.Contains(v)
 		}
-		return s1.Contains(v) && s2.Contains(w) || s1.Contains(w) && s2.Contains(v)
 	})
 
 	if noFilter {
 		res.degree = func(v int) (deg int) {
-			if v < t {
+			switch {
+			case v < t:
 				deg = g1.degree(v)
 				if s1.Contains(v) {
 					deg += s2.size()
 				}
 				return
+			default:
+				deg = g2.degree(v - t)
+				if s2.Contains(v) {
+					deg += s1.size()
+				}
+				return
 			}
-			deg = g2.degree(v - t)
-			if s2.Contains(v) {
-				deg += s1.size()
-			}
-			return
 		}
 	}
 
