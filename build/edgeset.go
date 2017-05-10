@@ -73,6 +73,7 @@ func newEdges(n int, e EdgeSet) *Virtual {
 	case n == 1:
 		return singleton()
 	}
+
 	var noCost bool
 	if e.Cost == nil {
 		noCost = true
@@ -83,12 +84,12 @@ func newEdges(n int, e EdgeSet) *Virtual {
 		noFilter = true
 		e.Keep = alwaysEdge
 	}
+
 	from := e.From.And(Range(0, n))
 	to := e.To.And(Range(0, n))
 	if from.size() == 0 || to.size() == 0 {
 		return Empty(n)
 	}
-
 	res := generic(n, e.Cost, func(v, w int) (edge bool) {
 		return e.Contains(v, w)
 	})
@@ -104,13 +105,15 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				return to.size()
 			case to.Contains(v):
 				return from.size()
+			default:
+				return
 			}
-			return
 		}
 	}
 
 	visit := func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
-		if intersect.Contains(v) {
+		switch {
+		case intersect.Contains(v):
 			for _, in := range union.And(Range(a, n)).set {
 				for w := in.a; w < in.b; w++ {
 					if v != w && e.Keep(v, w) && do(w, e.Cost(v, w)) {
@@ -119,8 +122,7 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				}
 			}
 			return
-		}
-		if from.Contains(v) {
+		case from.Contains(v):
 			for _, in := range to.And(Range(a, n)).set {
 				for w := in.a; w < in.b; w++ {
 					if e.Keep(v, w) && do(w, e.Cost(v, w)) {
@@ -129,8 +131,7 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				}
 			}
 			return
-		}
-		if to.Contains(v) {
+		case to.Contains(v):
 			for _, in := range from.And(Range(a, n)).set {
 				for w := in.a; w < in.b; w++ {
 					if e.Keep(v, w) && do(w, e.Cost(v, w)) {
@@ -139,12 +140,14 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				}
 			}
 			return
+		default:
+			return
 		}
-		return
 	}
 
 	visit0 := func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
-		if intersect.Contains(v) {
+		switch {
+		case intersect.Contains(v):
 			for _, in := range union.And(Range(a, n)).set {
 				for w := in.a; w < in.b; w++ {
 					if v != w && e.Keep(v, w) && do(w, 0) {
@@ -153,8 +156,7 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				}
 			}
 			return
-		}
-		if from.Contains(v) {
+		case from.Contains(v):
 			for _, in := range to.And(Range(a, n)).set {
 				for w := in.a; w < in.b; w++ {
 					if e.Keep(v, w) && do(w, 0) {
@@ -163,8 +165,7 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				}
 			}
 			return
-		}
-		if to.Contains(v) {
+		case to.Contains(v):
 			for _, in := range from.And(Range(a, n)).set {
 				for w := in.a; w < in.b; w++ {
 					if e.Keep(v, w) && do(w, 0) {
@@ -173,8 +174,9 @@ func newEdges(n int, e EdgeSet) *Virtual {
 				}
 			}
 			return
+		default:
+			return
 		}
-		return
 	}
 
 	if noCost {

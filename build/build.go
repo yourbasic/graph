@@ -78,21 +78,19 @@ type CostFunc func(v, w int) int64
 
 // Cost returns a CostFunc which always returns n.
 func Cost(n int64) CostFunc {
-	return func(_, _ int) int64 { return n }
+	return func(int, int) int64 { return n }
 }
 
-func neverEdge(_, _ int) bool  { return false }
+func neverEdge(int, int) bool  { return false }
 func alwaysEdge(v, w int) bool { return v != w }
 
-func zero(_, _ int) int64 { return 0 }
+func zero(int, int) int64 { return 0 }
 
-func degreeZero(_ int) int { return 0 }
-func degreeOne(_ int) int  { return 1 }
+func degreeZero(int) int { return 0 }
+func degreeOne(int) int  { return 1 }
 
-func noNeighbors(_ int, _ int, _ func(w int, c int64) bool) bool { return false }
+func noNeighbors(int, int, func(w int, c int64) bool) bool { return false }
 
-const maxint = int(^uint(0) >> 1)
-const minint = -maxint - 1
 const bitsPerWord = 32 << uint(^uint(0)>>63)
 
 func min(m, n int) int {
@@ -196,7 +194,7 @@ func generic(n int, cost CostFunc, edge func(v, w int) bool) *Virtual {
 		cost:  cost,
 	}
 	g.degree = func(v int) (deg int) {
-		g.visit(v, 0, func(_ int, _ int64) (skip bool) {
+		g.visit(v, 0, func(int, int64) (skip bool) {
 			deg++
 			return
 		})
@@ -229,7 +227,7 @@ func generic0(n int, edge func(v, w int) bool) *Virtual {
 		cost:  zero,
 	}
 	g.degree = func(v int) (deg int) {
-		g.visit(v, 0, func(_ int, _ int64) (skip bool) {
+		g.visit(v, 0, func(int, int64) (skip bool) {
 			deg++
 			return
 		})

@@ -29,14 +29,15 @@ func (g *Virtual) Subgraph(s VertexSet) *Virtual {
 		s0 := s.And(Range(s.get(a), n))
 		for _, in := range s0.set {
 			if more := false; g.visit(v0, in.a, func(w0 int, c int64) (skip bool) {
-				if w0 >= in.b {
+				switch {
+				case w0 >= in.b:
 					more, skip = true, true
 					return
-				}
-				if do(s.rank(w0), c) {
+				case do(s.rank(w0), c):
 					return true
+				default:
+					return
 				}
-				return
 			}) && !more {
 				return true
 			}

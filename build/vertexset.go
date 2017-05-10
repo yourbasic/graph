@@ -11,6 +11,11 @@ type VertexSet struct {
 	set []interval
 }
 
+const (
+	maxInt = int(^uint(0) >> 1)
+	minInt = -maxInt - 1
+)
+
 // An interval represents the numbers [a, b).
 type interval struct {
 	a, b  int
@@ -117,15 +122,15 @@ func (s VertexSet) complement() VertexSet {
 		return VertexSet{}
 	}
 	t := empty()
-	prev := minint
+	prev := minInt
 	for _, in := range s.set {
 		if prev != in.a {
 			t.set = append(t.set, interval{prev, in.a, 0})
 		}
 		prev = in.b
 	}
-	if prev < maxint {
-		t.set = append(t.set, interval{prev, maxint, 0})
+	if prev < maxInt {
+		t.set = append(t.set, interval{prev, maxInt, 0})
 	}
 	t.update()
 	return t
