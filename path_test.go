@@ -13,6 +13,7 @@ func TestShortestPath(t *testing.T) {
 	g.AddCost(2, 3, 1)
 	g.AddCost(2, 5, 8)
 	g.AddCost(3, 5, 7)
+	g.AddCost(1, 5, -1)
 	parent, dist := ShortestPaths(g, 0)
 	expParent := []int{-1, 0, 0, 1, -1, 3}
 	expDist := []int64{0, 1, 1, 1, -1, 8}
