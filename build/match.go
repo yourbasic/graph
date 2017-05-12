@@ -21,13 +21,14 @@ func (g1 *Virtual) Match(g2 *Virtual, bridge EdgeSet) *Virtual {
 		bridge.Cost = zero
 	}
 	matchCost := func(v, w int) int64 {
-		if v < t && w < t {
+		switch {
+		case v < t && w < t:
 			return g1.cost(v, w)
-		}
-		if v >= t && w >= t {
+		case v >= t && w >= t:
 			return g2.cost(v-t, w-t)
+		default:
+			return bridge.Cost(v, w)
 		}
-		return bridge.Cost(v, w)
 	}
 
 	if bridge.Keep == nil {
@@ -37,20 +38,20 @@ func (g1 *Virtual) Match(g2 *Virtual, bridge EdgeSet) *Virtual {
 	s2 := bridge.To.And(Range(t, g2.order+t))
 
 	res := generic(n, matchCost, func(v, w int) (edge bool) {
-		if v < t && w < t {
+		switch {
+		case v < t && w < t:
 			return g1.edge(v, w)
-		}
-		if v >= t && w >= t {
+		case v >= t && w >= t:
 			return g2.edge(v-t, w-t)
-		}
-		if !bridge.Keep(v, w) {
+		case !bridge.Keep(v, w):
 			return false
+		default:
+			s1v := s1.rank(v)
+			s1w := s1.rank(w)
+			s2v := s2.rank(v)
+			s2w := s2.rank(w)
+			return s1v != -1 && s1v == s2w || s1w != -1 && s1w == s2v
 		}
-		s1v := s1.rank(v)
-		s1w := s1.rank(w)
-		s2v := s2.rank(v)
-		s2w := s2.rank(w)
-		return s1v != -1 && s1v == s2w || s1w != -1 && s1w == s2v
 	})
 
 	res.visit = func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
