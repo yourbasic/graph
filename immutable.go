@@ -141,8 +141,5 @@ func (g *Immutable) Edge(v, w int) bool {
 
 // Degree returns the number of outward directed edges from v.
 func (g *Immutable) Degree(v int) int {
-	if v < 0 || v >= g.Order() {
-		return 0
-	}
 	return len(g.edges[v])
 }
