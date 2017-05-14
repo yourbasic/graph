@@ -98,7 +98,7 @@ func (g *Mutable) Visit(v int, do func(w int, c int64) bool) bool {
 	return false
 }
 
-// Degree returns the number of neighbors of v.
+// Degree returns the number of outward directed edges from v.
 func (g *Mutable) Degree(v int) int {
 	if v < 0 || v >= g.Order() {
 		return 0

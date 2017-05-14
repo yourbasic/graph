@@ -437,7 +437,7 @@ func (g *Virtual) Order() int {
 	return g.order
 }
 
-// Degree returns the number of neighbors of v.
+// Degree returns the number of outward directed edges from v.
 func (g *Virtual) Degree(v int) int {
 	if v < 0 || v >= g.order {
 		return 0

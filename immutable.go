@@ -139,7 +139,7 @@ func (g *Immutable) Edge(v, w int) bool {
 	return i < n && w == edges[i].vertex
 }
 
-// Degree returns the number of neighbors of v.
+// Degree returns the number of outward directed edges from v.
 func (g *Immutable) Degree(v int) int {
 	if v < 0 || v >= g.Order() {
 		return 0
