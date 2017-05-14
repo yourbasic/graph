@@ -440,7 +440,7 @@ func (g *Virtual) Order() int {
 // Degree returns the number of outward directed edges from v.
 func (g *Virtual) Degree(v int) int {
 	if v < 0 || v >= g.order {
-		return 0
+		panic("vertex out of range")
 	}
 	return g.degree(v)
 }
