@@ -6,7 +6,7 @@
 
 *Topological ordering, image by [David Eppstein][de], [CC0 1.0][cc010].*
 
-This library offers efficient and well-tested generic graph algorithms for
+This library offers efficient and well-tested graph algorithms for
 
 - breadth-first and depth-first search,
 - topological ordering,
@@ -40,7 +40,7 @@ The type `Immutable` is a compact representation of an immutable graph.
 The implementation uses lists to associate each vertex in the graph
 with its adjacent vertices. This makes for fast and predictable
 iteration: the Visit method produces its elements by reading
-from a fixed sorted precomputed list. This type supports multigraphs.
+from a fixed sorted precomputed list.
 
 ### Virtual graphs
 
