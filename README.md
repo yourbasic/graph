@@ -6,7 +6,7 @@
 
 *Topological ordering, image by [David Eppstein][de], [CC0 1.0][cc010].*
 
-This library offers efficient and well-tested graph algorithms for
+This library offers efficient and well-tested algorithms for
 
 - breadth-first and depth-first search,
 - topological ordering,
