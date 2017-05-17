@@ -10,7 +10,7 @@ func TopSort(g Iterator) (order []int, ok bool) {
 	return
 }
 
-// Acyclic returns true if g has no cycles.
+// Acyclic tells if g has no cycles.
 func Acyclic(g Iterator) bool {
 	_, acyclic := topsort(g, false)
 	return acyclic

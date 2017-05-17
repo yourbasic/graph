@@ -1,6 +1,6 @@
 package graph
 
-// Connected returns true if g has exactly one (weakly) connected component.
+// Connected tells if g has exactly one (weakly) connected component.
 func Connected(g Iterator) bool {
 	_, count := components(g)
 	return count == 1

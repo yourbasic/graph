@@ -70,12 +70,12 @@ func copyImmutable(g *Immutable) *Mutable {
 	return h
 }
 
-// String returns a string representation of this graph.
+// String returns a string representation of the graph.
 func (g *Mutable) String() string {
 	return String(g)
 }
 
-// Order returns the number of vertices in this graph.
+// Order returns the number of vertices in the graph.
 func (g *Mutable) Order() int {
 	return len(g.edges)
 }

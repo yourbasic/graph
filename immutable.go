@@ -118,12 +118,12 @@ func (g *Immutable) VisitFrom(v int, a int, do func(w int, c int64) bool) bool {
 	return false
 }
 
-// String returns a string representation of this graph.
+// String returns a string representation of the graph.
 func (g *Immutable) String() string {
 	return String(g)
 }
 
-// Order returns the number of vertices in this graph.
+// Order returns the number of vertices in the graph.
 func (g *Immutable) Order() int {
 	return len(g.edges)
 }

@@ -64,7 +64,8 @@ func (d *DFSData) dfsVisit(g graph.Iterator, v int) {
 	d.Finish[v] = d.Time
 }
 
-// An implementation of DFS demonstrating how to use this package.
+// An implementation of depth-first search
+// demonstrating how to use this package.
 func Example_dFS() {
 	// Build a small directed graph:
 	//

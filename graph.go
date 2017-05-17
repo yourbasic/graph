@@ -2,9 +2,10 @@
 //
 // Generic graph algorithms
 //
-// The algorithms can be applied to any graph data structure implementing
-// the two Iterator methods: Order, which returns the number of vertices,
-// and Visit, which iterates over the neighbors of a vertex.
+// The algorithms in this library can be applied to any graph data
+// structure implementing the two Iterator methods: Order, which returns
+// the number of vertices, and Visit, which iterates over the neighbors
+// of a vertex.
 //
 // All algorithms operate on directed graphs with a fixed number
 // of vertices, labeled from 0 to n-1, and edges with integer cost.
@@ -77,7 +78,7 @@ type edge struct {
 }
 
 // String returns a description of g with two elements:
-// the number of vertices, followed by a list of all edges.
+// the number of vertices, followed by a sorted list of all edges.
 func String(g Iterator) string {
 	n := g.Order()
 	// This may be a multigraph, so we look for duplicates by counting.
