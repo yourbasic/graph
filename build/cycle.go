@@ -1,7 +1,7 @@
 package build
 
-// Cycle returns a virtual cycle graph with the edges
-// {0, 1}, {1, 2}, {2, 3},... , {n-1, 0}.
+// Cycle returns a virtual cycle graph with n vertices and
+// the edges {0, 1}, {1, 2}, {2, 3},... , {n-1, 0}.
 func Cycle(n int) *Virtual {
 	switch {
 	case n < 0:
