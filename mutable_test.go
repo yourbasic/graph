@@ -143,12 +143,6 @@ func TestEdge(t *testing.T) {
 func TestDegree(t *testing.T) {
 	_, g1, g5 := setup()
 
-	if mess, diff := diff(g1.Degree(-1), 0); diff {
-		t.Errorf("g1.Degree(0) %s", mess)
-	}
-	if mess, diff := diff(g1.Degree(1), 0); diff {
-		t.Errorf("g1.Degree(0) %s", mess)
-	}
 	if mess, diff := diff(g1.Degree(0), 1); diff {
 		t.Errorf("g1.Degree(0) %s", mess)
 	}

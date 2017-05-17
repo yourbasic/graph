@@ -10,10 +10,10 @@ import (
 // Find a shortest path going back and forth between
 // two sets of points in the plane.
 func Example_euclid() {
-	type point struct{ x, y int }
+	type Point struct{ x, y int }
 
 	// Euclidean distance.
-	euclid := func(p, q point) float64 {
+	Euclid := func(p, q Point) float64 {
 		xd := p.x - q.x
 		yd := p.y - q.y
 		return math.Sqrt(float64(xd*xd + yd*yd))
@@ -22,7 +22,7 @@ func Example_euclid() {
 	// 0     3
 	// 1     4
 	// 2     5
-	points := []point{
+	points := []Point{
 		{0, 0}, {0, 1}, {0, 2},
 		{4, 0}, {4, 1}, {4, 2},
 	}
@@ -32,7 +32,7 @@ func Example_euclid() {
 	// and then apply a cost function to the edges of the graph.
 	g := build.Kmn(3, 3).AddCostFunc(func(v, w int) int64 {
 		// Distance to three decimal places.
-		return int64(1000 * euclid(points[v], points[w]))
+		return int64(1000 * Euclid(points[v], points[w]))
 	})
 
 	// Find a shortest path from 0 to 2.

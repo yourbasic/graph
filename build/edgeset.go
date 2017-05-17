@@ -24,7 +24,7 @@ func NoEdges() EdgeSet {
 	}
 }
 
-// Edge returns a set consisting of the single edge {v, w}, where v ≠ w.
+// Edge returns a set consisting of a single edge {v, w}, v ≠ w, of zero cost.
 func Edge(v, w int) EdgeSet {
 	if v < 0 || w < 0 || v == w {
 		return NoEdges()
@@ -35,7 +35,7 @@ func Edge(v, w int) EdgeSet {
 	}
 }
 
-// Contains tells if the set contains the edge from v to w.
+// Contains tells if the set contains the edge {v, w}.
 func (e EdgeSet) Contains(v, w int) bool {
 	switch {
 	case e.Keep != nil && !e.Keep(v, w):

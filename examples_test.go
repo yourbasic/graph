@@ -17,11 +17,11 @@ func Example_basics() {
 	g.AddBoth(1, 3)
 
 	// The vertices of all graphs in this package are numbered 0..n-1.
-	// The edge iterator is a method called Visit; it calls
-	// a do function for each neighbor of a given vertex. Together
-	// with the Order method—which returns the number of vertices
-	// in a graph—it constitutes an Iterator. All algorithms in this
-	// package operate on any graph implementing this interface.
+	// The edge iterator is a method called Visit; it calls a function
+	// for each neighbor of a given vertex. Together with the Order
+	// method — which returns the number of vertices in a graph — it
+	// constitutes an Iterator. All algorithms in this package operate
+	// on any graph implementing this interface.
 
 	// Visit all edges of a graph.
 	for v := 0; v < g.Order(); v++ {
@@ -118,9 +118,8 @@ func ExampleEulerDirected() {
 	g.AddBoth(0, 1)
 	g.Add(1, 2)
 
-	walk, _ := graph.EulerDirected(g)
-	fmt.Println(walk)
-	// Output: [1 0 1 2]
+	fmt.Println(graph.EulerDirected(g))
+	// Output: [1 0 1 2] true
 }
 
 // Find an Euler walk in an undirected graph.
@@ -135,10 +134,9 @@ func ExampleEulerUndirected() {
 	g.AddBoth(2, 3)
 	g.AddBoth(3, 3)
 
-	walk, _ := graph.EulerUndirected(g)
-	fmt.Println(walk)
+	fmt.Println(graph.EulerUndirected(g))
 	// Output:
-	// [1 3 3 2]
+	// [1 3 3 2] true
 }
 
 // Find a shortest path between two vertices in a graph.

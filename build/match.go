@@ -3,7 +3,7 @@ package build
 // Match connects g1 to g2 by matching vertices in g1 with vertices in g2.
 // Only vertices belonging to the bridge are included,
 // and the vertices are matched in numerical order.
-// The vertices of g2 are renumbered before the operation:
+// The vertices of g2 are renumbered before the matching:
 // vertex v ∊ g2 becomes v + g1.Order() in the new graph.
 func (g1 *Virtual) Match(g2 *Virtual, bridge EdgeSet) *Virtual {
 	n := g1.order + g2.order

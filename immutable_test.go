@@ -178,12 +178,6 @@ func TestEdgeImm(t *testing.T) {
 func TestDegreeImm(t *testing.T) {
 	_, g1, g1c, g5, g5c := SetUpImm()
 
-	if mess, diff := diff(g1.Degree(-1), 0); diff {
-		t.Errorf("g1.Degree(0) %s", mess)
-	}
-	if mess, diff := diff(g1.Degree(1), 0); diff {
-		t.Errorf("g1.Degree(0) %s", mess)
-	}
 	if mess, diff := diff(g1.Degree(0), 1); diff {
 		t.Errorf("g1.Degree(0) %s", mess)
 	}

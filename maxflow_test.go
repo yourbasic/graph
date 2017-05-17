@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -65,5 +66,21 @@ func TestMaxFlow(t *testing.T) {
 	exp = "6 [(2 1):4 (3 2):4]"
 	if mess, diff := diff(String(res), exp); diff {
 		t.Errorf("MaxFlow(3, 1) %s", mess)
+	}
+}
+
+
+func BenchmarkMaxFlow(b *testing.B) {
+	n := 50
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < n; i++ {
+		for j := i; j < n; j++ {
+			g.AddCost(i, j, int64(rand.Int()))
+		}
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = MaxFlow(g, 0, n-1)
 	}
 }

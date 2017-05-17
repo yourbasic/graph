@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -29,5 +30,18 @@ func TestStrongComponents(t *testing.T) {
 	exp := [][]int{{2, 1, 0}, {6, 4}, {5, 3}, {7}, {8}, {9}}
 	if mess, diff := diff(StrongComponents(g), exp); diff {
 		t.Errorf("StronglyConnected %s", mess)
+	}
+}
+
+func BenchmarkStrongComponents(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < n; i++ {
+		g.Add(rand.Intn(n), rand.Intn(n))
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_ = StrongComponents(g)
 	}
 }

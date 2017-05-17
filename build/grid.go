@@ -2,10 +2,10 @@ package build
 
 import "strconv"
 
-// Grid returns a virtual graph whose vertices correspond to points in the plane
-// with integer coordinates, y-coordinates being in the range 0..m-1,
-// and x-coordinates in the range 0..n-1. Two vertices are connected
-// by an edge whenever the corresponding points are at distance 1.
+// Grid returns a virtual graph whose vertices correspond to integer
+// points in the plane: y-coordinates being in the range 0..m-1,
+// and x-coordinates in the range 0..n-1. Two vertices of a grid
+// are adjacent whenever the corresponding points are at distance 1.
 //
 // Point (x, y) gets index nx + y, and index i corresponds to the point (i/n, i%n).
 func Grid(m, n int) *Virtual {

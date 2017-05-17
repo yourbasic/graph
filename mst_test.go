@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -28,5 +29,18 @@ func TestMST(t *testing.T) {
 	exp := []int{-1, 0, 5, 2, 3, 6, 7, 0, 2, -1}
 	if mess, diff := diff(MST(g), exp); diff {
 		t.Errorf("MST: %s", mess)
+	}
+}
+
+func BenchmarkMST(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < 2*n; i++ {
+		g.AddCost(rand.Intn(n), rand.Intn(n), int64(rand.Int()))
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_ = MST(g)
 	}
 }

@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -78,5 +79,37 @@ func TestAcyclic(t *testing.T) {
 	g.Add(1, 3)
 	if mess, diff := diff(Acyclic(g), false); diff {
 		t.Errorf("Acyclic %s", mess)
+	}
+}
+
+func BenchmarkAcyclic(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < 2*n; i++ {
+		v, w := rand.Intn(n), rand.Intn(n)
+		if v < w {
+			g.AddBoth(v, w)
+		}
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Acyclic(g)
+	}
+}
+
+func BenchmarkTopSort(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < 2*n; i++ {
+		v, w := rand.Intn(n), rand.Intn(n)
+		if v < w {
+			g.AddBoth(v, w)
+		}
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = TopSort(g)
 	}
 }
