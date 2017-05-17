@@ -2,8 +2,8 @@ package graph
 
 // MaxFlow computes a maximum flow from s to t in a graph
 // with nonnegative edge capacities.
-// The time complexity is O(|V|⋅|E|²), where |V| is the number of vertices
-// and |E| the number of edges in the graph.
+// The time complexity is O(|E|²⋅|V|), where |E| is the number of edges
+// and |V| the number of vertices in the graph.
 func MaxFlow(g Iterator, s, t int) (flow int64, graph Iterator) {
 	// Edmonds-Karp's algorithm
 	n := g.Order()

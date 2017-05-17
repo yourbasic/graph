@@ -2,7 +2,7 @@ package build
 
 import "strconv"
 
-// Tensor returns the tensor product of g1 and g2;
+// Tensor returns the tensor product of g1 and g2:
 // a graph whose vertices correspond to ordered pairs (v1, v2),
 // where v1 and v2 are vertices in g1 and g2, respectively.
 // The vertices (v1, v2) and (w1, w2) are connected by an edge whenever

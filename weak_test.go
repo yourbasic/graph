@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -48,5 +49,31 @@ func TestComponents(t *testing.T) {
 	}
 	if mess, diff := diff(Connected(g), true); diff {
 		t.Errorf("Connected %s", mess)
+	}
+}
+
+func BenchmarkConnected(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < n; i++ {
+		g.AddBoth(rand.Intn(n), rand.Intn(n))
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Connected(g)
+	}
+}
+
+func BenchmarkComponents(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < n; i++ {
+		g.AddBoth(rand.Intn(n), rand.Intn(n))
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Components(g)
 	}
 }

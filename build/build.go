@@ -68,7 +68,7 @@ type Virtual struct {
 	visit  func(v int, a int, do func(w int, c int64) (skip bool)) (aborted bool)
 }
 
-// FilterFunc is a function that tells if there is an edge from v to w.
+// FilterFunc is a function that tells if there is a directed edge from v to w.
 // The nil value represents an edge functions that always returns true.
 type FilterFunc func(v, w int) bool
 
@@ -76,7 +76,7 @@ type FilterFunc func(v, w int) bool
 // The nil value represents a cost function that always returns 0.
 type CostFunc func(v, w int) int64
 
-// Cost returns a CostFunc which always returns n.
+// Cost returns a CostFunc that always returns n.
 func Cost(n int64) CostFunc {
 	return func(int, int) int64 { return n }
 }
@@ -432,15 +432,15 @@ func (g *Virtual) AddCostFunc(c CostFunc) *Virtual {
 	return &res
 }
 
-// Order returns the number of vertices in this graph.
+// Order returns the number of vertices in the graph.
 func (g *Virtual) Order() int {
 	return g.order
 }
 
-// Degree returns the number of neighbors of v.
+// Degree returns the number of outward directed edges from v.
 func (g *Virtual) Degree(v int) int {
 	if v < 0 || v >= g.order {
-		return 0
+		panic("vertex out of range")
 	}
 	return g.degree(v)
 }

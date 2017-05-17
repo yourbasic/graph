@@ -3,8 +3,8 @@ package build
 import "sort"
 
 // VertexSet represents a set of vertices in a graph.
-// The zero value of a VertexSet is the universe,
-// which represents all vertices in a graph.
+// The zero value of a VertexSet is the universe;
+// the set containing all vertices.
 type VertexSet struct {
 	// A set is an immutable sorted list of non-empty disjoint intervals.
 	// The zero value VertexSet{nil} represents the universe.
@@ -90,7 +90,7 @@ func (s VertexSet) rank(n int) int {
 	return in.index + n - in.a
 }
 
-// Contains tells if v is a member of set s.
+// Contains tells if v is a member of the set.
 func (s VertexSet) Contains(v int) bool {
 	switch {
 	case s.set == nil:

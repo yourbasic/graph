@@ -1,6 +1,6 @@
 package graph
 
-// Connected returns true if g has exactly one (weakly) connected component.
+// Connected tells if g has exactly one (weakly) connected component.
 func Connected(g Iterator) bool {
 	_, count := components(g)
 	return count == 1
@@ -45,8 +45,9 @@ func components(g Iterator) (sets disjointSets, count int) {
 	return
 }
 
-// Union-find with path compression performs any sequence of
-// m ≥ n find and n – 1 union operations in O(m log n) time.
+// Union-find with path compression performs any sequence of m ≥ n find
+// and n – 1 union operations in O(m log n) time. Union by rank doesn't
+// seem to improve performance here.
 type disjointSets []int
 
 func makeSingletons(n int) disjointSets {
