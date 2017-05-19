@@ -63,7 +63,7 @@ type Iterator interface {
 	//  • The calls to the do function may occur in any order,
 	//    and the order may vary.
 	//
-	Visit(v int, Do func(w int, c int64) (skip bool)) (aborted bool)
+	Visit(v int, do func(w int, c int64) (skip bool)) (aborted bool)
 }
 
 // The maximum and minum value of an edge cost.
