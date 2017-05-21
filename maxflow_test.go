@@ -69,7 +69,6 @@ func TestMaxFlow(t *testing.T) {
 	}
 }
 
-
 func BenchmarkMaxFlow(b *testing.B) {
 	n := 50
 	b.StopTimer()
