@@ -42,20 +42,21 @@ import (
 // functions that describe the edges of a graph.
 type Virtual struct {
 	order int
-	// The edge and cost functions define a weighted graph without self-loops.
+	// The `edge` and `cost` functions define a weighted graph without self-loops.
 	//
 	//  • edge(v, w) returns true whenever (v, w) belongs to the graph;
 	//    the value is disregarded when v == w.
 	//
-	//  • cost(v, w) returns the cost of (v, w); the value is disregarded
-	//    when edge(v, w) is false.
+	//  • cost(v, w) returns the cost of (v, w);
+	//    the value is disregarded when edge(v, w) is false.
+	//
 	edge func(v, w int) bool
 	cost func(v, w int) int64
 
-	// These functions can be used to improve performance.
-	// They MUST BE CONSISTENT with edge and cost.
-	// The generic() factory method contains a basic implementation.
-	// The Consistent test function should be used to check compliance.
+	// The `degree` and `visit` functions can be used to improve performance.
+	// They MUST BE CONSISTENT with edge and cost. If not implemented,
+	// the `generic` or `generic0` implementation is used instead.
+	// The `Consistent` test function should be used to check compliance.
 	//
 	//  • degree(v) returns the outdegree of vertex v.
 	//
@@ -64,12 +65,13 @@ type Virtual struct {
 	//    If a call to do returns true, visit MUST ABORT the iteration
 	//    and return true; if successful it should return false.
 	//    Precondition: a ≥ 0.
+	//
 	degree func(v int) int
 	visit  func(v int, a int, do func(w int, c int64) (skip bool)) (aborted bool)
 }
 
 // FilterFunc is a function that tells if there is a directed edge from v to w.
-// The nil value represents an edge functions that always returns true.
+// The nil value represents an edge function that always returns true.
 type FilterFunc func(v, w int) bool
 
 // CostFunc is a function that computes the cost of an edge from v to w.
@@ -107,7 +109,7 @@ func max(m, n int) int {
 	return m
 }
 
-// null is the null graph; a graph of order 0.
+// null is the null graph; a graph with no vertices.
 var null = new(Virtual)
 
 // singleton returns a graph with one vertex.
@@ -126,7 +128,7 @@ func edge() *Virtual {
 	g := &Virtual{
 		order:  2,
 		cost:   zero,
-		edge:   func(v, w int) bool { return v != w },
+		edge:   alwaysEdge,
 		degree: degreeOne,
 	}
 	g.visit = func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
@@ -260,17 +262,16 @@ func Generic(n int, edge FilterFunc) *Virtual {
 	return generic0(n, edge)
 }
 
-// Specific returns a cached copy of g with constant time performance
-// for all basic operations. It uses space proportional to
-// the size of the graph.
+// Specific returns a cached copy of g with constant time performance for
+// all basic operations. It uses space proportional to the size of the graph.
 //
 // This function does not accept multigraphs and graphs with self-loops.
 func Specific(g graph.Iterator) *Virtual {
-	stats := graph.Check(g)
+	h := graph.Sort(g)
+	stats := graph.Check(h)
 	if stats.Multi != 0 || stats.Loops != 0 {
 		panic("Virtual doesn't support multiple edges or self-loops")
 	}
-	h := graph.Sort(g)
 	res := &Virtual{
 		order:  h.Order(),
 		edge:   h.Edge,
@@ -282,7 +283,7 @@ func Specific(g graph.Iterator) *Virtual {
 		return res
 	}
 	res.cost = func(v, w int) (cost int64) {
-		if !res.edge(v, w) {
+		if !h.Edge(v, w) {
 			return 0
 		}
 		h.VisitFrom(v, w, func(w int, c int64) (skip bool) {
@@ -353,10 +354,7 @@ func (g *Virtual) Complement() *Virtual {
 		return singleton()
 	}
 	res := generic0(n, func(v, w int) (edge bool) {
-		if v != w {
-			return !g.edge(v, w)
-		}
-		return
+		return v != w && !g.edge(v, w)
 	})
 	res.degree = func(v int) int { return n - 1 - g.degree(v) }
 	res.visit = func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
