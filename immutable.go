@@ -81,7 +81,6 @@ func build(g Iterator, transpose bool) *Immutable {
 				prev = w
 			}
 		}
-
 	}
 	return h
 }
