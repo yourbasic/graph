@@ -19,7 +19,8 @@ func Bipartition(g Iterator) (part []int, ok bool) {
 		colors[v] = white
 		whiteCount++
 		for queue := []int{v}; len(queue) > 0; {
-			v, queue = queue[0], queue[1:]
+			v := queue[0]
+			queue = queue[1:]
 			if g.Visit(v, func(w int, _ int64) (skip bool) {
 				switch {
 				case colors[w] != none:

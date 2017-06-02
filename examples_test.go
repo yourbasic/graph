@@ -5,7 +5,7 @@ import (
 	"github.com/yourbasic/graph"
 )
 
-// How to iterate over the edges of a graph.
+// Build a plain graph and visit all of its edges.
 func Example_basics() {
 	// Build a graph with four vertices and four undirected edges.
 	// (Each of these edges are, in fact, represented by two directed

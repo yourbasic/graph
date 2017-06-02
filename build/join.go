@@ -28,7 +28,6 @@ func (g1 *Virtual) Join(g2 *Virtual, bridge EdgeSet) *Virtual {
 		default:
 			return bridge.Cost(v, w)
 		}
-		return bridge.Cost(v, w)
 	}
 
 	var noFilter bool

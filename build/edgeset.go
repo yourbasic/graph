@@ -62,7 +62,7 @@ func (g *Virtual) Delete(e EdgeSet) *Virtual {
 	})
 }
 
-// NewEdges returns a virtual graph with n vertices and all edges
+// newEdges returns a virtual graph with n vertices and all edges
 // belonging to the edge set.
 func newEdges(n int, e EdgeSet) *Virtual {
 	switch {
