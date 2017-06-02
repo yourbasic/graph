@@ -23,11 +23,11 @@
 // to turn on caching for any component. This gives constant time
 // performance for all basic operations on that component.
 //
-// Example usage
+// Tutorial
 //
-// The package examples show how to build graphs from standard components
-// using composition and filtering. They also demonstrate how to apply
-// a cost function to a virtual graph.
+// The Euclid and Maxflow examples show how to build graphs from
+// standard components using composition and filtering. They also
+// demonstrate how to apply a cost function to a virtual graph.
 //
 package build
 
