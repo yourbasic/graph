@@ -41,7 +41,10 @@ import (
 // by composing and filtering a set of standard graphs, or by writing
 // functions that describe the edges of a graph.
 type Virtual struct {
+	// The `order` field is, in fact, a constant function.
+	// It returns the number of vertices in the graph.
 	order int
+
 	// The `edge` and `cost` functions define a weighted graph without self-loops.
 	//
 	//  • edge(v, w) returns true whenever (v, w) belongs to the graph;
