@@ -22,7 +22,7 @@ type interval struct {
 	index int // index of a in the whole set
 }
 
-// updates the index values.
+// update updates the index values.
 func (s VertexSet) update() {
 	prev := 0
 	for i, in := range s.set {
@@ -46,7 +46,7 @@ func Range(a, b int) VertexSet {
 
 // Vertex returns a set containing the single vertex v.
 func Vertex(v int) VertexSet {
-	return Range(v, v+1)
+	return VertexSet{[]interval{{v, v + 1, 0}}}
 }
 
 // size returns the number of elements in this set, or -1 for the universe.

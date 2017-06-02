@@ -24,6 +24,9 @@ type neighbor struct {
 // Sort returns an immutable copy of g with a Visit method
 // that returns its neighbors in increasing numerical order.
 func Sort(g Iterator) *Immutable {
+	if g, ok := g.(*Immutable); ok {
+		return g
+	}
 	return build(g, false)
 }
 
@@ -36,9 +39,6 @@ func Transpose(g Iterator) *Immutable {
 }
 
 func build(g Iterator, transpose bool) *Immutable {
-	if g, ok := g.(*Immutable); ok && !transpose {
-		return g
-	}
 	n := g.Order()
 	h := &Immutable{edges: make([][]neighbor, n)}
 	for v := range h.edges {
@@ -81,7 +81,6 @@ func build(g Iterator, transpose bool) *Immutable {
 				prev = w
 			}
 		}
-
 	}
 	return h
 }

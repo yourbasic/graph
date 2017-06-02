@@ -7,14 +7,8 @@ package graph
 func MaxFlow(g Iterator, s, t int) (flow int64, graph Iterator) {
 	// Edmonds-Karp's algorithm
 	n := g.Order()
-	residual := New(n)
-	for v := 0; v < n; v++ {
-		g.Visit(v, func(w int, c int64) (skip bool) {
-			residual.AddCost(v, w, c)
-			return
-		})
-	}
 	prev := make([]int, n)
+	residual := Copy(g)
 	for residualFlow(residual, s, t, prev) && flow < Max {
 		pathFlow := Max
 		for v := t; v != s; {
@@ -41,11 +35,10 @@ func MaxFlow(g Iterator, s, t int) (flow int64, graph Iterator) {
 			return
 		})
 	}
-	graph = Sort(res)
-	return
+	return flow, Sort(res)
 }
 
-func residualFlow(g Iterator, s, t int, prev []int) bool {
+func residualFlow(g *Mutable, s, t int, prev []int) bool {
 	visited := make([]bool, g.Order())
 	prev[s], visited[s] = -1, true
 	for queue := []int{s}; len(queue) > 0; {

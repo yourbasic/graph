@@ -46,12 +46,12 @@ func Copy(g Iterator) *Mutable {
 
 func copyMutable(g *Mutable) *Mutable {
 	h := New(g.Order())
-	for v := range g.edges {
-		if deg := len(g.edges[v]); deg > 0 {
+	for v, neighbors := range g.edges {
+		if deg := len(neighbors); deg > 0 {
 			h.edges[v] = make(map[int]int64, deg)
-		}
-		for w, c := range g.edges[v] {
-			h.edges[v][w] = c
+			for w, c := range neighbors {
+				h.edges[v][w] = c
+			}
 		}
 	}
 	return h
@@ -59,12 +59,12 @@ func copyMutable(g *Mutable) *Mutable {
 
 func copyImmutable(g *Immutable) *Mutable {
 	h := New(g.Order())
-	for v := range g.edges {
-		if deg := len(g.edges[v]); deg > 0 {
+	for v, neighbors := range g.edges {
+		if deg := len(neighbors); deg > 0 {
 			h.edges[v] = make(map[int]int64, deg)
-		}
-		for _, edge := range g.edges[v] {
-			h.edges[v][edge.vertex] = edge.cost
+			for _, edge := range neighbors {
+				h.edges[v][edge.vertex] = edge.cost
+			}
 		}
 	}
 	return h
