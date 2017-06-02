@@ -36,10 +36,12 @@
 // by composing and filtering a set of standard graphs, or by writing
 // functions that describe the edges of a graph.
 //
-// Example usage
+// Tutorial
 //
-// The package examples show how to build plain graphs and how to efficiently
-// use the Visit iterator, the vital abstraction of this package.
+// The Basics example shows how to build  a plain graph and how to
+// efficiently use the Visit iterator, the key abstraction of this package.
+//
+// The DFS example contains a full implementation of depth-first search.
 //
 package graph
 
