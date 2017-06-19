@@ -1,8 +1,6 @@
-# Your basic graph
+# Your basic graph [![GoDoc](https://godoc.org/github.com/yourbasic/graph?status.svg)][godoc-graph]
 
 ### Golang library of basic graph algorithms
-
-[![GoDoc](https://godoc.org/github.com/yourbasic/graph?status.svg)][godoc-graph]
 
 ![Topological ordering](top.png)
 
