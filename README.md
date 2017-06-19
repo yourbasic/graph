@@ -2,6 +2,8 @@
 
 ### Golang library of basic graph algorithms
 
+[![GoDoc](https://godoc.org/github.com/yourbasic/graph?status.svg)][godoc-graph]
+
 ![Topological ordering](top.png)
 
 *Topological ordering, image by [David Eppstein][de], [CC0 1.0][cc010].*
