@@ -6,7 +6,7 @@ import "strconv"
 // a graph whose vertices correspond to ordered pairs (v1, v2),
 // where v1 and v2 are vertices in g1 and g2, respectively.
 // The vertices (v1, v2) and (w1, w2) are connected by an edge if
-// v1 = w1 and (v2, w2) ∊ g2 or v2 = w2 and (v1, w1) ∊ g1.
+// v1 = w1 and {v2, w2} ∊ g2 or v2 = w2 and {v1, w1} ∊ g1.
 //
 // In the new graph, vertex (v1, v2) gets index n⋅v1 + v2, where n = g2.Order(),
 // and index i corresponds to the vertice (i/n, i%n).
