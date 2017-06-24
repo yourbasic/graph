@@ -28,6 +28,7 @@ directed edges (v, w) and (w, v), both of cost c.
 A self-loop, an edge connecting a vertex to itself,
 is both directed and undirected.
 
+
 ### Graph data structures
 
 The type `Mutable` represents a directed graph with a fixed number
@@ -42,13 +43,41 @@ with its adjacent vertices. This makes for fast and predictable
 iteration: the Visit method produces its elements by reading
 from a fixed sorted precomputed list.
 
+
 ### Virtual graphs
 
-The subpackage `graph/build` offers a tool for building virtual graphs.
+The subpackage `graph/build` offers a tool for building graphs of type `Virtual`.
+
 In a virtual graph no vertices or edges are stored in memory,
 they are instead computed as needed. New virtual graphs are constructed
 by composing and filtering a set of standard graphs, or by writing
 functions that describe the edges of a graph.
+
+The following standard graphs are predefined:
+
+- empty graphs,
+- complete graphs and complete bipartite graphs,
+- grid graphs and complete *k*-ary trees,
+- cycle graphs and circulant graphs,
+- and hypergraphs.
+
+The following operations are supported:
+
+- adding and deleting sets of edges,
+- adding cost functions,
+- filtering graphs by edge functions,
+- complement, intersection and union,
+- subgraphs,
+- connecting graphs at a single vertex,
+- joining two graphs by a set of edges,
+- matching two graphs by a set of edges,
+- cartesian product and tensor product.
+
+Non-virtual graphs can be imported, and used as building blocks,
+by the `Specific` function. Virtual graphs don't need to be “exported‬”;
+they implement the `Iterator` interface and hence can be used directly
+by any algorithm in the graph package.
+
 
 ### Installation
 
@@ -56,11 +85,13 @@ Once you have [installed Go][golang-install], run this command
 to install the `graph` package:
 
     go get github.com/yourbasic/graph
+
     
 ### Documentation
 
 There is an online reference for the package at
 [godoc.org/github.com/yourbasic/graph][godoc-graph].
+
 
 ### Roadmap
 
