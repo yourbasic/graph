@@ -22,8 +22,10 @@ func Cycle(n int) *Virtual {
 		return
 	})
 
+	// Precondition : n ≥ 3.
 	g.degree = func(v int) int { return 2 }
 
+	// Precondition : n ≥ 3.
 	g.visit = func(v int, a int, do func(w int, c int64) bool) (aborted bool) {
 		var w [2]int
 		switch v {
