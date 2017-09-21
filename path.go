@@ -44,7 +44,7 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 	dist[v] = 0
 
 	// Dijkstra's algorithm
-	Q := emptySpQueue(dist)
+	Q := emptyQueue(dist)
 	heap.Push(Q, v)
 	for Q.Len() > 0 {
 		v = heap.Pop(Q).(int)
@@ -65,44 +65,4 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 		})
 	}
 	return
-}
-
-type spQueue struct {
-	heap  []int // vertices in heap order
-	index []int // index of each vertex in the heap
-	dist  []int64
-}
-
-func emptySpQueue(dist []int64) *spQueue {
-	return &spQueue{dist: dist, index: make([]int, len(dist))}
-}
-
-func (pq *spQueue) Len() int { return len(pq.heap) }
-
-func (pq *spQueue) Less(i, j int) bool {
-	return pq.dist[pq.heap[i]] < pq.dist[pq.heap[j]]
-}
-
-func (pq *spQueue) Swap(i, j int) {
-	pq.heap[i], pq.heap[j] = pq.heap[j], pq.heap[i]
-	pq.index[pq.heap[i]] = i
-	pq.index[pq.heap[j]] = j
-}
-
-func (pq *spQueue) Push(x interface{}) {
-	n := len(pq.heap)
-	v := x.(int)
-	pq.heap = append(pq.heap, v)
-	pq.index[v] = n
-}
-
-func (pq *spQueue) Pop() interface{} {
-	n := len(pq.heap) - 1
-	v := pq.heap[n]
-	pq.heap = pq.heap[:n]
-	return v
-}
-
-func (pq *spQueue) Update(v int) {
-	heap.Fix(pq, pq.index[v])
 }
