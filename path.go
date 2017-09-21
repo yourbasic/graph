@@ -1,9 +1,5 @@
 package graph
 
-import (
-	"container/heap"
-)
-
 // ShortestPath computes a shortest path from v to w.
 // Only edges with non-negative costs are included.
 // The number dist is the length of the path, or -1 if w cannot be reached.
@@ -44,10 +40,10 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 	dist[v] = 0
 
 	// Dijkstra's algorithm
-	Q := emptyQueue(dist)
-	heap.Push(Q, v)
+	Q := emptyPrioQueue(dist)
+	Q.Push(v)
 	for Q.Len() > 0 {
-		v = heap.Pop(Q).(int)
+		v := Q.Pop()
 		g.Visit(v, func(w int, d int64) (skip bool) {
 			if d < 0 {
 				return
@@ -56,10 +52,10 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 			switch {
 			case dist[w] == -1:
 				dist[w], parent[w] = alt, v
-				heap.Push(Q, w)
+				Q.Push(w)
 			case alt < dist[w]:
 				dist[w], parent[w] = alt, v
-				Q.Update(w)
+				Q.Fix(w)
 			}
 			return
 		})

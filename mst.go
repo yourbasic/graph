@@ -1,9 +1,5 @@
 package graph
 
-import (
-	"container/heap"
-)
-
 // MST computes a minimum spanning tree for each connected component
 // of an undirected weighted graph.
 // The forest of spanning trees is returned as a slice of parent pointers:
@@ -22,13 +18,13 @@ func MST(g Iterator) (parent []int) {
 	}
 
 	// Prim's algorithm
-	Q := newQueue(cost)
+	Q := newPrioQueue(cost)
 	for Q.Len() > 0 {
-		v := heap.Pop(Q).(int)
+		v := Q.Pop()
 		g.Visit(v, func(w int, c int64) (skip bool) {
 			if Q.Contains(w) && c < cost[w] {
 				cost[w] = c
-				Q.Update(w)
+				Q.Fix(w)
 				parent[w] = v
 			}
 			return
