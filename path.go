@@ -1,9 +1,5 @@
 package graph
 
-import (
-	"container/heap"
-)
-
 // ShortestPath computes a shortest path from v to w.
 // Only edges with non-negative costs are included.
 // The number dist is the length of the path, or -1 if w cannot be reached.
@@ -44,10 +40,10 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 	dist[v] = 0
 
 	// Dijkstra's algorithm
-	Q := emptySpQueue(dist)
-	heap.Push(Q, v)
+	Q := emptyPrioQueue(dist)
+	Q.Push(v)
 	for Q.Len() > 0 {
-		v = heap.Pop(Q).(int)
+		v := Q.Pop()
 		g.Visit(v, func(w int, d int64) (skip bool) {
 			if d < 0 {
 				return
@@ -56,53 +52,13 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 			switch {
 			case dist[w] == -1:
 				dist[w], parent[w] = alt, v
-				heap.Push(Q, w)
+				Q.Push(w)
 			case alt < dist[w]:
 				dist[w], parent[w] = alt, v
-				Q.Update(w)
+				Q.Fix(w)
 			}
 			return
 		})
 	}
 	return
-}
-
-type spQueue struct {
-	heap  []int // vertices in heap order
-	index []int // index of each vertex in the heap
-	dist  []int64
-}
-
-func emptySpQueue(dist []int64) *spQueue {
-	return &spQueue{dist: dist, index: make([]int, len(dist))}
-}
-
-func (pq *spQueue) Len() int { return len(pq.heap) }
-
-func (pq *spQueue) Less(i, j int) bool {
-	return pq.dist[pq.heap[i]] < pq.dist[pq.heap[j]]
-}
-
-func (pq *spQueue) Swap(i, j int) {
-	pq.heap[i], pq.heap[j] = pq.heap[j], pq.heap[i]
-	pq.index[pq.heap[i]] = i
-	pq.index[pq.heap[j]] = j
-}
-
-func (pq *spQueue) Push(x interface{}) {
-	n := len(pq.heap)
-	v := x.(int)
-	pq.heap = append(pq.heap, v)
-	pq.index[v] = n
-}
-
-func (pq *spQueue) Pop() interface{} {
-	n := len(pq.heap) - 1
-	v := pq.heap[n]
-	pq.heap = pq.heap[:n]
-	return v
-}
-
-func (pq *spQueue) Update(v int) {
-	heap.Fix(pq, pq.index[v])
 }
