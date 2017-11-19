@@ -46,8 +46,9 @@
 package graph
 
 import (
+	"bytes"
+	"fmt"
 	"sort"
-	"strconv"
 )
 
 // Iterator describes a weighted graph; an Iterator can be used
@@ -109,63 +110,60 @@ func String(g Iterator) string {
 		}
 	})
 	// Build the string.
-	var buf []byte
-	buf = strconv.AppendInt(buf, int64(n), 10)
-	buf = append(buf, " ["...)
-	for _, e := range edges {
+	buf := new(bytes.Buffer) // TODO: Change to strconv.Builder when Go 1.10 available.
+	fmt.Fprintf(buf, "%d [", n)
+	for i, e := range edges {
 		c := count[e]
+		if i != 0 && c > 0 {
+			buf.WriteByte(' ')
+		}
 		if e.v < e.w {
 			// Collect edges in opposite directions into an undirected edge.
 			back := edge{e.w, e.v, e.c}
 			m := min(c, count[back])
 			count[back] -= m
-			buf = appendEdge(buf, e, m, true)
-			buf = appendEdge(buf, e, c-m, false)
+			writeEdge(buf, e, m, true)
+			if m > 0 && c-m > 0 {
+				buf.WriteByte(' ')
+			}
+			writeEdge(buf, e, c-m, false)
 		} else {
-			buf = appendEdge(buf, e, c, false)
+			writeEdge(buf, e, c, false)
 		}
 	}
-	if len(edges) > 0 {
-		buf = buf[:len(buf)-1] // Remove trailing ' '.
-	}
-	buf = append(buf, ']')
-	return string(buf)
+	buf.WriteByte(']')
+	return buf.String()
 }
 
-func appendEdge(buf []byte, e edge, count int, bi bool) []byte {
+func writeEdge(buf *bytes.Buffer, e edge, count int, bi bool) {
 	if count <= 0 {
-		return buf
+		return
 	}
 	if count > 1 {
-		buf = strconv.AppendInt(buf, int64(count), 10)
-		buf = append(buf, "×"...)
+		fmt.Fprintf(buf, "%d×", count)
 	}
 	if bi {
-		buf = append(buf, '{')
+		buf.WriteByte('{')
 	} else {
-		buf = append(buf, '(')
+		buf.WriteByte('(')
 	}
-	buf = strconv.AppendInt(buf, int64(e.v), 10)
-	buf = append(buf, ' ')
-	buf = strconv.AppendInt(buf, int64(e.w), 10)
+	fmt.Fprintf(buf, "%d %d", e.v, e.w)
 	if bi {
-		buf = append(buf, '}')
+		buf.WriteByte('}')
 	} else {
-		buf = append(buf, ')')
+		buf.WriteByte(')')
 	}
 	if e.c != 0 {
-		buf = append(buf, ':')
+		buf.WriteByte(':')
 		switch e.c {
 		case Max:
-			buf = append(buf, "max"...)
+			buf.WriteString("max")
 		case Min:
-			buf = append(buf, "min"...)
+			buf.WriteString("min")
 		default:
-			buf = strconv.AppendInt(buf, e.c, 10)
+			fmt.Fprintf(buf, "%d", e.c)
 		}
 	}
-	buf = append(buf, ' ')
-	return buf
 }
 
 // Stats holds basic data about an Iterator.
@@ -192,7 +190,7 @@ func Check(g Iterator) Stats {
 	for v := 0; v < n; v++ {
 		g.Visit(v, func(w int, c int64) (skip bool) {
 			if w < 0 || w >= n {
-				panic("vertex out of range: " + strconv.Itoa(w))
+				panic(fmt.Sprintf("vertex out of range: %d", w))
 			}
 			if v == w {
 				stats.Loops++
