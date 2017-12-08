@@ -1,4 +1,4 @@
-// +build !go1.10
+// +build go1.10
 
 // Package graph contains generic implementations of basic graph algorithms.
 //
@@ -48,9 +48,9 @@
 package graph
 
 import (
-	"bytes"
 	"fmt"
 	"sort"
+	"strings"
 )
 
 // Iterator describes a weighted graph; an Iterator can be used
@@ -112,7 +112,7 @@ func String(g Iterator) string {
 		}
 	})
 	// Build the string.
-	buf := new(bytes.Buffer)
+	buf := new(strings.Builder)
 	fmt.Fprintf(buf, "%d [", n)
 	for i, e := range edges {
 		c := count[e]
@@ -137,7 +137,7 @@ func String(g Iterator) string {
 	return buf.String()
 }
 
-func writeEdge(buf *bytes.Buffer, e edge, count int, bi bool) {
+func writeEdge(buf *strings.Builder, e edge, count int, bi bool) {
 	if count <= 0 {
 		return
 	}
