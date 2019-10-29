@@ -68,7 +68,7 @@ type Iterator interface {
 	Visit(v int, do func(w int, c int64) (skip bool)) (aborted bool)
 }
 
-// The maximum and minum value of an edge cost.
+// The maximum and minimum value of an edge cost.
 const (
 	Max int64 = 1<<63 - 1
 	Min int64 = -1 << 63
