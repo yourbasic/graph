@@ -4,8 +4,8 @@ package graph
 // Only edges with non-negative costs are included.
 // The number dist is the length of the path, or -1 if w cannot be reached.
 //
-// The pessimistic time complexity is O((|E| + |V|)⋅log|V|), where |E| is the
-// number of edges and |V| the number of vertices in the graph.
+// The time complexity is O((|E| + |V|)⋅log|V|), where |E| is the number of edges
+// and |V| the number of vertices in the graph.
 func ShortestPath(g Iterator, v, w int) (path []int, dist int64) {
 	n := g.Order()
 	dists := make([]int64, n)
