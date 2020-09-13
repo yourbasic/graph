@@ -42,23 +42,36 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 	// Dijkstra's algorithm
 	Q := emptyPrioQueue(dist)
 	Q.Push(v)
+	p := &pathFinder{dist: dist, parent: parent, Q: Q}
+	do := p.Do
 	for Q.Len() > 0 {
 		v := Q.Pop()
-		g.Visit(v, func(w int, d int64) (skip bool) {
-			if d < 0 {
-				return
-			}
-			alt := dist[v] + d
-			switch {
-			case dist[w] == -1:
-				dist[w], parent[w] = alt, v
-				Q.Push(w)
-			case alt < dist[w]:
-				dist[w], parent[w] = alt, v
-				Q.Fix(w)
-			}
-			return
-		})
+		p.v = v
+		g.Visit(v, do)
+	}
+	return
+}
+
+type pathFinder struct {
+	dist   []int64
+	parent []int
+	Q      *prioQueue
+	v      int
+}
+
+// Do performs a part of the shortest path algorithm.
+func (p *pathFinder) Do(w int, d int64) (skip bool) {
+	if d < 0 {
+		return
+	}
+	alt := p.dist[p.v] + d
+	switch {
+	case p.dist[w] == -1:
+		p.dist[w], p.parent[w] = alt, p.v
+		p.Q.Push(w)
+	case alt < p.dist[w]:
+		p.dist[w], p.parent[w] = alt, p.v
+		p.Q.Fix(w)
 	}
 	return
 }
