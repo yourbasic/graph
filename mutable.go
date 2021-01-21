@@ -2,6 +2,7 @@ package graph
 
 import (
 	"strconv"
+	"sort"
 )
 
 const initialMapSize = 4
@@ -90,11 +91,21 @@ func (g *Mutable) Order() int {
 // It is safe to delete, but not to add, edges adjacent to v
 // during a call to this method.
 func (g *Mutable) Visit(v int, do func(w int, c int64) bool) bool {
-	for w, c := range g.edges[v] {
-		if do(w, c) {
+    // To store the keys in slice in sorted order
+    keys := make([]int, len(g.edges[v]))
+    i := 0
+    for k := range g.edges[v] {
+        keys[i] = k
+        i++
+    }
+    sort.Ints(keys)
+
+	for _, w := range keys {
+		if do(w, g.edges[v][w]) {
 			return true
 		}
 	}
+
 	return false
 }
 
