@@ -7,18 +7,45 @@ package graph
 // The time complexity is O((|E| + |V|)⋅log|V|), where |E| is the number of edges
 // and |V| the number of vertices in the graph.
 func ShortestPath(g Iterator, v, w int) (path []int, dist int64) {
-	parent, distances := ShortestPaths(g, v)
-	path, dist = []int{}, distances[w]
-	if dist == -1 {
-		return
+	n := g.Order()
+	dists := make([]int64, n)
+	parents := make([]int, n)
+	for i := range dists {
+		dists[i], parents[i] = -1, -1
 	}
-	for v := w; v != -1; v = parent[v] {
-		path = append(path, v)
+	dists[v] = 0
+
+	// Dijkstra's algorithm
+	q := emptyPrioQueue(dists)
+	q.Push(v)
+	for q.Len() > 0 {
+		u := q.Pop()
+		if u == w {
+			for x := w; x != -1; x = parents[x] {
+				path = append(path, x)
+			}
+			for i, j := 0, len(path)-1; i < j; i, j = i+1, j-1 {
+				path[i], path[j] = path[j], path[i]
+			}
+			return path, dists[w]
+		}
+		g.Visit(u, func(x int, d int64) (skip bool) {
+			if d < 0 {
+				return
+			}
+			alt := dists[u] + d
+			switch {
+			case dists[x] == -1:
+				dists[x], parents[x] = alt, u
+				q.Push(x)
+			case alt < dists[x]:
+				dists[x], parents[x] = alt, u
+				q.Fix(x)
+			}
+			return
+		})
 	}
-	for i, j := 0, len(path)-1; i < j; i, j = i+1, j-1 {
-		path[i], path[j] = path[j], path[i]
-	}
-	return
+	return []int{}, -1
 }
 
 // ShortestPaths computes the shortest paths from v to all other vertices.

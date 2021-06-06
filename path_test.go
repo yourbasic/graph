@@ -50,16 +50,76 @@ func TestShortestPath(t *testing.T) {
 	}
 }
 
+func randomGraph(n int) (*Mutable, int) {
+	g := New(n)
+	h := n / 2
+	var t int
+	for i := 0; i < n; i++ {
+		g.Add(0, rand.Intn(n))
+		if i == h {
+			t = rand.Intn(n)
+			g.Add(rand.Intn(n), t)
+		} else {
+			g.Add(rand.Intn(n), rand.Intn(n))
+		}
+	}
+	return g, t
+}
+
+// Store benchmark results as global variables to prevent unwanted optimizations.
+var path []int
+var dist int64
+
+func BenchmarkShortestPath250(b *testing.B) {
+	g, t := randomGraph(250)
+	b.ResetTimer()
+	var p []int
+	var d int64
+	for i := 0; i < b.N; i++ {
+		p, d = ShortestPath(g, 0, t)
+	}
+	path, dist = p, d
+}
+
+func BenchmarkShortestPath500(b *testing.B) {
+	g, t := randomGraph(500)
+	b.ResetTimer()
+	var p []int
+	var d int64
+	for i := 0; i < b.N; i++ {
+		p, d = ShortestPath(g, 0, t)
+	}
+	path, dist = p, d
+}
+
+func BenchmarkShortestPath1000(b *testing.B) {
+	g, t := randomGraph(1000)
+	b.ResetTimer()
+	var p []int
+	var d int64
+	for i := 0; i < b.N; i++ {
+		p, d = ShortestPath(g, 0, t)
+	}
+	path, dist = p, d
+}
+
+var (
+	parent    []int
+	distances []int64
+)
+
 func BenchmarkShortestPaths(b *testing.B) {
 	n := 1000
-	b.StopTimer()
 	g := New(n)
 	for i := 0; i < n; i++ {
 		g.Add(0, rand.Intn(n))
 		g.Add(rand.Intn(n), rand.Intn(n))
 	}
-	b.StartTimer()
+	b.ResetTimer()
+	var p []int
+	var d []int64
 	for i := 0; i < b.N; i++ {
-		_, _ = ShortestPaths(g, 0)
+		p, d = ShortestPaths(g, 0)
 	}
+	parent, distances = p, d
 }
