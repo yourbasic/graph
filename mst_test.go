@@ -34,6 +34,7 @@ func TestMST(t *testing.T) {
 
 func BenchmarkMST(b *testing.B) {
 	n := 1000
+	b.ReportAllocs()
 	b.StopTimer()
 	g := New(n)
 	for i := 0; i < 2*n; i++ {

@@ -1,0 +1,8 @@
+name   old time/op    new time/op    delta
+MST-8     249µs ± 0%     190µs ± 0%  -23.85%
+
+name   old alloc/op   new alloc/op   delta
+MST-8    96.9kB ± 0%    33.0kB ± 0%  -65.99%
+
+name   old allocs/op  new allocs/op  delta
+MST-8     1.01k ± 0%     0.01k ± 0%  -99.20%

@@ -19,16 +19,18 @@ func MST(g Iterator) (parent []int) {
 
 	// Prim's algorithm
 	Q := newPrioQueue(cost)
+	var v int
+	do := func(w int, c int64) (skip bool) {
+		if Q.Contains(w) && c < cost[w] {
+			cost[w] = c
+			Q.Fix(w)
+			parent[w] = v
+		}
+		return
+	}
 	for Q.Len() > 0 {
-		v := Q.Pop()
-		g.Visit(v, func(w int, c int64) (skip bool) {
-			if Q.Contains(w) && c < cost[w] {
-				cost[w] = c
-				Q.Fix(w)
-				parent[w] = v
-			}
-			return
-		})
+		v = Q.Pop()
+		g.Visit(v, do)
 	}
 	return
 }
