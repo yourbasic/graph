@@ -7,7 +7,7 @@ package graph
 // The time complexity is O((|E| + |V|)⋅log|V|), where |E| is the number of edges
 // and |V| the number of vertices in the graph.
 func ShortestPath(g Iterator, v, w int) (path []int, dist int64) {
-	parent, distances := ShortestPaths(g, v)
+	parent, distances := shortestPath(g, v, w)
 	path, dist = []int{}, distances[w]
 	if dist == -1 {
 		return
@@ -31,6 +31,12 @@ func ShortestPath(g Iterator, v, w int) (path []int, dist int64) {
 // The time complexity is O((|E| + |V|)⋅log|V|), where |E| is the number of edges
 // and |V| the number of vertices in the graph.
 func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
+	// Use -1 to search for a vertex that doesn't exists so it will
+	// search for all the shortest paths from v.
+	return shortestPath(g, v, -1)
+}
+
+func shortestPath(g Iterator, v, w int) (parent []int, dist []int64) {
 	n := g.Order()
 	dist = make([]int64, n)
 	parent = make([]int, n)
@@ -42,23 +48,28 @@ func ShortestPaths(g Iterator, v int) (parent []int, dist []int64) {
 	// Dijkstra's algorithm
 	Q := emptyPrioQueue(dist)
 	Q.Push(v)
-	for Q.Len() > 0 {
-		v := Q.Pop()
-		g.Visit(v, func(w int, d int64) (skip bool) {
-			if d < 0 {
-				return
-			}
-			alt := dist[v] + d
-			switch {
-			case dist[w] == -1:
-				dist[w], parent[w] = alt, v
-				Q.Push(w)
-			case alt < dist[w]:
-				dist[w], parent[w] = alt, v
-				Q.Fix(w)
-			}
+
+	do := func(w int, d int64) (skip bool) {
+		if d < 0 {
 			return
-		})
+		}
+		alt := dist[v] + d
+		switch {
+		case dist[w] == -1:
+			dist[w], parent[w] = alt, v
+			Q.Push(w)
+		case alt < dist[w]:
+			dist[w], parent[w] = alt, v
+			Q.Fix(w)
+		}
+		return
+	}
+	for Q.Len() > 0 {
+		v = Q.Pop()
+		if v == w {
+			return
+		}
+		g.Visit(v, do)
 	}
 	return
 }

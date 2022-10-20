@@ -50,6 +50,21 @@ func TestShortestPath(t *testing.T) {
 	}
 }
 
+func BenchmarkShortestPath(b *testing.B) {
+	n := 1000
+	b.StopTimer()
+	g := New(n)
+	for i := 0; i < n; i++ {
+		g.Add(0, rand.Intn(n))
+		g.Add(rand.Intn(n), rand.Intn(n))
+	}
+	b.ReportAllocs()
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = ShortestPath(g, 0, n-1)
+	}
+}
+
 func BenchmarkShortestPaths(b *testing.B) {
 	n := 1000
 	b.StopTimer()
@@ -58,6 +73,7 @@ func BenchmarkShortestPaths(b *testing.B) {
 		g.Add(0, rand.Intn(n))
 		g.Add(rand.Intn(n), rand.Intn(n))
 	}
+	b.ReportAllocs()
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		_, _ = ShortestPaths(g, 0)
