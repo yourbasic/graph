@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"strconv"
 	"testing"
 )
@@ -24,5 +25,21 @@ func TestBFS(t *testing.T) {
 	})
 	if mess, diff := diff(res, exp); diff {
 		t.Errorf("BFS: %s", mess)
+	}
+}
+
+func BenchmarkBFS(b *testing.B) {
+	n := 1000
+	g := New(n)
+	for i := 0; i < 5*n; i++ {
+		g.AddBoth(rand.Intn(n), rand.Intn(n))
+	}
+
+	fn := func(v, w int, c int64) {}
+
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		BFS(g, 0, fn)
 	}
 }
