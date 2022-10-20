@@ -12,31 +12,36 @@ func Bipartition(g Iterator) (part []int, ok bool) {
 	)
 	colors := make([]color, g.Order())
 	whiteCount := 0
+
+	var src int
+	var queue []int
+	do := func(w int, _ int64) (skip bool) {
+		v := src
+		switch {
+		case colors[w] != none:
+			if colors[v] == colors[w] {
+				skip = true
+			}
+			return
+		case colors[v] == white:
+			colors[w] = black
+		default:
+			colors[w] = white
+			whiteCount++
+		}
+		queue = append(queue, w)
+		return
+	}
 	for v := range colors {
 		if colors[v] != none {
 			continue
 		}
 		colors[v] = white
 		whiteCount++
-		for queue := []int{v}; len(queue) > 0; {
-			v := queue[0]
+		for queue = []int{v}; len(queue) > 0; {
+			src = queue[0]
 			queue = queue[1:]
-			if g.Visit(v, func(w int, _ int64) (skip bool) {
-				switch {
-				case colors[w] != none:
-					if colors[v] == colors[w] {
-						skip = true
-					}
-					return
-				case colors[v] == white:
-					colors[w] = black
-				default:
-					colors[w] = white
-					whiteCount++
-				}
-				queue = append(queue, w)
-				return
-			}) {
+			if g.Visit(src, do) {
 				return []int{}, false
 			}
 		}

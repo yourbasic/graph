@@ -1,0 +1,8 @@
+name           old time/op    new time/op    delta
+Bipartition-8    1.88µs ± 0%    1.40µs ± 0%  -25.44%
+
+name           old alloc/op   new alloc/op   delta
+Bipartition-8    3.62kB ± 0%    2.79kB ± 0%  -22.79%
+
+name           old allocs/op  new allocs/op  delta
+Bipartition-8      26.0 ± 0%      14.0 ± 0%  -46.15%
