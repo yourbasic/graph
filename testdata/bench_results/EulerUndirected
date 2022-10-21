@@ -1,0 +1,8 @@
+name               old time/op    new time/op    delta
+EulerUndirected-8    7.07µs ± 0%    2.39µs ± 0%  -66.21%
+
+name               old alloc/op   new alloc/op   delta
+EulerUndirected-8    5.72kB ± 0%    0.97kB ± 0%  -83.08%
+
+name               old allocs/op  new allocs/op  delta
+EulerUndirected-8       104 ± 0%         5 ± 0%  -95.19%

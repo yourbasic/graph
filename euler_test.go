@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -153,5 +154,41 @@ func TestEulerUndirected(t *testing.T) {
 	}
 	if mess, diff := diff(ok, false); diff {
 		t.Errorf("EulerUndirected: %s", mess)
+	}
+}
+
+func BenchmarkEulerDirected(b *testing.B) {
+	n := 100
+	g := New(n)
+	for i := 0; i < n-1; i++ {
+		g.Add(i, i+1)
+	}
+	for i := 0; i < 3*n; i++ {
+		g.Add(rand.Intn(n), rand.Intn(n))
+	}
+	h := Sort(g)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = EulerDirected(h)
+	}
+}
+
+func BenchmarkEulerUndirected(b *testing.B) {
+	n := 100
+	g := New(n)
+	for i := 0; i < n-1; i++ {
+		g.AddBoth(i, i+1)
+	}
+	for i := 0; i < 3*n; i++ {
+		g.Add(rand.Intn(n), rand.Intn(n))
+	}
+	h := Sort(g)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = EulerUndirected(h)
 	}
 }
