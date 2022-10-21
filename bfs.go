@@ -7,17 +7,20 @@ package graph
 func BFS(g Iterator, v int, do func(v, w int, c int64)) {
 	visited := make([]bool, g.Order())
 	visited[v] = true
-	for queue := []int{v}; len(queue) > 0; {
-		v := queue[0]
-		queue = queue[1:]
-		g.Visit(v, func(w int, c int64) (skip bool) {
-			if visited[w] {
-				return
-			}
-			do(v, w, c)
-			visited[w] = true
-			queue = append(queue, w)
+	queue := []int{v}
+
+	fn := func(w int, c int64) (skip bool) {
+		if visited[w] {
 			return
-		})
+		}
+		do(v, w, c)
+		visited[w] = true
+		queue = append(queue, w)
+		return
+	}
+	for len(queue) > 0 {
+		v = queue[0]
+		queue = queue[1:]
+		g.Visit(v, fn)
 	}
 }
