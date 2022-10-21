@@ -1,0 +1,8 @@
+name         old time/op    new time/op    delta
+Connected-8     151µs ± 0%     104µs ± 0%  -31.26%
+
+name         old alloc/op   new alloc/op   delta
+Connected-8    40.2kB ± 0%     8.3kB ± 0%  -79.45%
+
+name         old allocs/op  new allocs/op  delta
+Connected-8     1.00k ± 0%     0.01k ± 0%  -99.50%

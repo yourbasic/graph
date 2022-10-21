@@ -29,18 +29,21 @@ func Components(g Iterator) [][]int {
 func components(g Iterator) (sets disjointSets, count int) {
 	n := g.Order()
 	sets, count = makeSingletons(n), n
-	for v := 0; v < n && count > 1; v++ {
-		g.Visit(v, func(w int, _ int64) (skip bool) {
-			x, y := sets.find(v), sets.find(w)
-			if x != y {
-				sets.union(x, y)
-				count--
-				if count == 1 {
-					skip = true
-				}
+
+	var v int
+	do := func(w int, _ int64) (skip bool) {
+		x, y := sets.find(v), sets.find(w)
+		if x != y {
+			sets.union(x, y)
+			count--
+			if count == 1 {
+				skip = true
 			}
-			return
-		})
+		}
+		return
+	}
+	for v = 0; v < n && count > 1; v++ {
+		g.Visit(v, do)
 	}
 	return
 }
