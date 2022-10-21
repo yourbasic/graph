@@ -19,11 +19,12 @@ func Acyclic(g Iterator) bool {
 // Kahn's algorithm
 func topsort(g Iterator, output bool) (order []int, acyclic bool) {
 	indegree := make([]int, g.Order())
+	addIndegree := func(w int, _ int64) (skip bool) {
+		indegree[w]++
+		return
+	}
 	for v := range indegree {
-		g.Visit(v, func(w int, _ int64) (skip bool) {
-			indegree[w]++
-			return
-		})
+		g.Visit(v, addIndegree)
 	}
 
 	// Invariant: this queue holds all vertices with indegree 0.
@@ -34,6 +35,13 @@ func topsort(g Iterator, output bool) (order []int, acyclic bool) {
 		}
 	}
 
+	subIndegree := func(w int, _ int64) (skip bool) {
+		indegree[w]--
+		if indegree[w] == 0 {
+			queue = append(queue, w)
+		}
+		return
+	}
 	order = []int{}
 	vertexCount := 0
 	for len(queue) > 0 {
@@ -43,13 +51,7 @@ func topsort(g Iterator, output bool) (order []int, acyclic bool) {
 			order = append(order, v)
 		}
 		vertexCount++
-		g.Visit(v, func(w int, _ int64) (skip bool) {
-			indegree[w]--
-			if indegree[w] == 0 {
-				queue = append(queue, w)
-			}
-			return
-		})
+		g.Visit(v, subIndegree)
 	}
 	if vertexCount != g.Order() {
 		return

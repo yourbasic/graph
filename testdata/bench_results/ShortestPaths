@@ -1,0 +1,8 @@
+name             old time/op    new time/op    delta
+ShortestPaths-8     121µs ± 0%      80µs ± 0%  -34.06%
+
+name             old alloc/op   new alloc/op   delta
+ShortestPaths-8    79.2kB ± 0%    39.7kB ± 0%  -49.85%
+
+name             old allocs/op  new allocs/op  delta
+ShortestPaths-8       841 ± 0%        19 ± 0%  -97.74%

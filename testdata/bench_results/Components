@@ -1,0 +1,8 @@
+name          old time/op    new time/op    delta
+Components-8     196µs ± 0%     149µs ± 0%  -24.01%
+
+name          old alloc/op   new alloc/op   delta
+Components-8    86.8kB ± 0%    54.8kB ± 0%  -36.83%
+
+name          old allocs/op  new allocs/op  delta
+Components-8     1.23k ± 0%     0.23k ± 0%  -80.96%

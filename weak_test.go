@@ -54,6 +54,7 @@ func TestComponents(t *testing.T) {
 
 func BenchmarkConnected(b *testing.B) {
 	n := 1000
+	b.ReportAllocs()
 	b.StopTimer()
 	g := New(n)
 	for i := 0; i < n; i++ {
@@ -67,6 +68,7 @@ func BenchmarkConnected(b *testing.B) {
 
 func BenchmarkComponents(b *testing.B) {
 	n := 1000
+	b.ReportAllocs()
 	b.StopTimer()
 	g := New(n)
 	for i := 0; i < n; i++ {

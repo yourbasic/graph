@@ -1,0 +1,8 @@
+name    old time/op    new time/op    delta
+Sort-8     608µs ± 0%     500µs ± 0%  -17.79%
+
+name    old alloc/op   new alloc/op   delta
+Sort-8     249kB ± 0%     201kB ± 0%  -19.25%
+
+name    old allocs/op  new allocs/op  delta
+Sort-8     6.03k ± 0%     5.03k ± 0%  -16.57%

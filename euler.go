@@ -6,13 +6,18 @@ func EulerDirected(g Iterator) (walk []int, ok bool) {
 	n := g.Order()
 	degree := make([]int, n) // outdegree - indegree for each vertex
 	edgeCount := 0
+
+	var src int
+	degreeFn := func(w int, _ int64) (skip bool) {
+		v := src
+		edgeCount++
+		degree[v]++
+		degree[w]--
+		return
+	}
 	for v := range degree {
-		g.Visit(v, func(w int, _ int64) (skip bool) {
-			edgeCount++
-			degree[v]++
-			degree[w]--
-			return
-		})
+		src = v
+		g.Visit(src, degreeFn)
 	}
 	if edgeCount == 0 {
 		return []int{}, true
@@ -33,11 +38,14 @@ func EulerDirected(g Iterator) (walk []int, ok bool) {
 
 	// Make a copy of g
 	h := make([][]int, n)
+	copyFn := func(w int, _ int64) (skip bool) {
+		v := src
+		h[v] = append(h[v], w)
+		return
+	}
 	for v := range h {
-		g.Visit(v, func(w int, _ int64) (skip bool) {
-			h[v] = append(h[v], w)
-			return
-		})
+		src = v
+		g.Visit(src, copyFn)
 	}
 
 	// Find a starting point with neighbors.
@@ -77,14 +85,19 @@ func EulerUndirected(g Iterator) (walk []int, ok bool) {
 	n := g.Order()
 	out := make([]int, n) // outdegree for each vertex
 	edgeCount := 0
+
+	var src int
+	outDegreeFn := func(w int, _ int64) (skip bool) {
+		v := src
+		edgeCount++
+		if v != w {
+			out[v]++
+		}
+		return
+	}
 	for v := range out {
-		g.Visit(v, func(w int, _ int64) (skip bool) {
-			edgeCount++
-			if v != w {
-				out[v]++
-			}
-			return
-		})
+		src = v
+		g.Visit(src, outDegreeFn)
 	}
 	if edgeCount == 0 {
 		return []int{}, true

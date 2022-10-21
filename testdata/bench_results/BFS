@@ -1,0 +1,8 @@
+name   old time/op    new time/op    delta
+BFS-8     269µs ± 0%     206µs ± 0%  -23.36%
+
+name   old alloc/op   new alloc/op   delta
+BFS-8    86.8kB ± 0%    23.2kB ± 0%  -73.27%
+
+name   old allocs/op  new allocs/op  delta
+BFS-8     1.01k ± 0%     0.02k ± 0%  -98.33%

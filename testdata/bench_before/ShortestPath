@@ -1,0 +1,7 @@
+goos: linux
+goarch: amd64
+pkg: github.com/rschio/graph
+cpu: Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz
+BenchmarkShortestPath-8   	    8378	    140683 ns/op	   79875 B/op	     856 allocs/op
+PASS
+ok  	github.com/rschio/graph	1.198s

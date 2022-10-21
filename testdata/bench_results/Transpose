@@ -1,0 +1,8 @@
+name         old time/op    new time/op    delta
+Transpose-8     404µs ± 0%     401µs ± 0%   -0.72%
+
+name         old alloc/op   new alloc/op   delta
+Transpose-8     218kB ± 0%     170kB ± 0%  -22.04%
+
+name         old allocs/op  new allocs/op  delta
+Transpose-8     5.00k ± 0%     4.00k ± 0%  -19.98%

@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math/rand"
 	"testing"
 )
 
@@ -91,5 +92,20 @@ func TestBipartition(t *testing.T) {
 	}
 	if mess, diff := diff(ok, true); diff {
 		t.Errorf("Bipartition: %s", mess)
+	}
+}
+
+func BenchmarkBipartition(b *testing.B) {
+	n := 1000
+	g := New(n)
+	for i := 0; i < 3*n; i++ {
+		g.AddBoth(rand.Intn(n), rand.Intn(n))
+	}
+	h := Sort(g)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = Bipartition(h)
 	}
 }
