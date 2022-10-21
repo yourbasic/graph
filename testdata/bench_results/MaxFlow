@@ -1,8 +1,0 @@
-name       old time/op    new time/op    delta
-MaxFlow-8     2.05s ± 0%     2.06s ± 0%  +0.47%
-
-name       old alloc/op   new alloc/op   delta
-MaxFlow-8    15.6MB ± 0%    15.4MB ± 0%  -1.22%
-
-name       old allocs/op  new allocs/op  delta
-MaxFlow-8     22.2k ± 0%     21.5k ± 0%  -3.18%

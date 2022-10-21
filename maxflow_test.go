@@ -70,8 +70,7 @@ func TestMaxFlow(t *testing.T) {
 }
 
 func BenchmarkMaxFlow(b *testing.B) {
-	n := 500
-	b.ReportAllocs()
+	n := 50
 	b.StopTimer()
 	g := New(n)
 	for i := 0; i < n; i++ {

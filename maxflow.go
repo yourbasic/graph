@@ -27,15 +27,13 @@ func MaxFlow(g Iterator, s, t int) (flow int64, graph Iterator) {
 		}
 	}
 	res := New(n)
-	var v int
-	do := func(w int, c int64) (skip bool) {
-		if flow := c - residual.Cost(v, w); flow > 0 {
-			res.AddCost(v, w, flow)
-		}
-		return
-	}
-	for v = 0; v < n; v++ {
-		g.Visit(v, do)
+	for v := 0; v < n; v++ {
+		g.Visit(v, func(w int, c int64) (skip bool) {
+			if flow := c - residual.Cost(v, w); flow > 0 {
+				res.AddCost(v, w, flow)
+			}
+			return
+		})
 	}
 	return flow, Sort(res)
 }
@@ -43,21 +41,17 @@ func MaxFlow(g Iterator, s, t int) (flow int64, graph Iterator) {
 func residualFlow(g *Mutable, s, t int, prev []int) bool {
 	visited := make([]bool, g.Order())
 	prev[s], visited[s] = -1, true
-	queue := []int{s}
-
-	var v int
-	do := func(w int, c int64) (skip bool) {
-		if !visited[w] && c > 0 {
-			prev[w] = v
-			visited[w] = true
-			queue = append(queue, w)
-		}
-		return
-	}
-	for len(queue) > 0 {
-		v = queue[0]
+	for queue := []int{s}; len(queue) > 0; {
+		v := queue[0]
 		queue = queue[1:]
-		g.Visit(v, do)
+		g.Visit(v, func(w int, c int64) (skip bool) {
+			if !visited[w] && c > 0 {
+				prev[w] = v
+				visited[w] = true
+				queue = append(queue, w)
+			}
+			return
+		})
 	}
 	return visited[t]
 }
