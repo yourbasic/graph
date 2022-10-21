@@ -41,18 +41,21 @@ func Transpose(g Iterator) *Immutable {
 func build(g Iterator, transpose bool) *Immutable {
 	n := g.Order()
 	h := &Immutable{edges: make([][]neighbor, n)}
-	for v := range h.edges {
-		g.Visit(v, func(w int, c int64) (skip bool) {
-			if w < 0 || w >= n {
-				panic("vertex out of range: " + strconv.Itoa(w))
-			}
-			if transpose {
-				h.edges[w] = append(h.edges[w], neighbor{v, c})
-			} else {
-				h.edges[v] = append(h.edges[v], neighbor{w, c})
-			}
-			return
-		})
+
+	var v int
+	do := func(w int, c int64) (skip bool) {
+		if w < 0 || w >= n {
+			panic("vertex out of range: " + strconv.Itoa(w))
+		}
+		if transpose {
+			h.edges[w] = append(h.edges[w], neighbor{v, c})
+		} else {
+			h.edges[v] = append(h.edges[v], neighbor{w, c})
+		}
+		return
+	}
+	for v = range h.edges {
+		g.Visit(v, do)
 		sort.Slice(h.edges[v], func(i, j int) bool {
 			if e := h.edges[v]; e[i].vertex == e[j].vertex {
 				return e[i].cost < e[j].cost

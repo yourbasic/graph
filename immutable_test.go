@@ -197,3 +197,29 @@ func TestDegreeImm(t *testing.T) {
 		t.Errorf("g5c.Degree(1) %s", mess)
 	}
 }
+
+func BenchmarkSort(b *testing.B) {
+	n := 1000
+	g := New(n)
+	for i := 0; i < 3*n; i++ {
+		g.Add(rand.Intn(n), rand.Intn(n))
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Sort(g)
+	}
+}
+
+func BenchmarkTranspose(b *testing.B) {
+	n := 1000
+	g := New(n)
+	for i := 0; i < 3*n; i++ {
+		g.Add(rand.Intn(n), rand.Intn(n))
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = Transpose(g)
+	}
+}
