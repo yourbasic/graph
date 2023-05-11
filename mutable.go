@@ -1,7 +1,10 @@
 package graph
 
 import (
+	"sort"
 	"strconv"
+
+	"golang.org/x/exp/maps"
 )
 
 const initialMapSize = 4
@@ -11,7 +14,6 @@ const initialMapSize = 4
 // The implementation uses hash maps to associate each vertex in the graph with
 // its adjacent vertices. This gives constant time performance for
 // all basic operations.
-//
 type Mutable struct {
 	// The map edges[v] contains the mapping {w:c} if there is an edge
 	// from v to w, and c is the cost assigned to this edge.
@@ -85,12 +87,15 @@ func (g *Mutable) Order() int {
 // If do returns true, Visit returns immediately,
 // skipping any remaining neighbors, and returns true.
 //
-// The iteration order is not specified and is not guaranteed
-// to be the same every time.
+// The iteration order is deterministic.
 // It is safe to delete, but not to add, edges adjacent to v
 // during a call to this method.
 func (g *Mutable) Visit(v int, do func(w int, c int64) bool) bool {
-	for w, c := range g.edges[v] {
+	keys := maps.Keys(g.edges[v])
+	sort.Ints(keys)
+
+	for _, w := range keys {
+		c := g.edges[v][w]
 		if do(w, c) {
 			return true
 		}
